@@ -1,10 +1,37 @@
-server:
-  port: 7900
+#server:
+#  port: 7900
 spring:
-  application: eureka
+  application:
+    name: eureka-server
 eureka:
+  instance:
+    hostname: euk.com
+    lease-renewal-interval-in-seconds: 10
   client:
     register-with-eureka: false
     fetch-registry: false
-    sevice-url:
-      defaultZone: http://localhost:7900/eureka/
+    serviceUrl:
+      defaultZone: http://euk.com:7900/eureka/,http://euk.com:7901/eureka/,http://euk.com:7902/eureka/
+---
+spring:
+  profiles: 7900
+eureka:
+  instance:
+    hostname: 7900
+
+---
+spring:
+  profiles: 7901
+eureka:
+  instance:
+    hostname: 7901
+server:
+  port: 7901
+---
+spring:
+  profiles: 7902
+eureka:
+  instance:
+    hostname: 7902
+server:
+  port: 7902

@@ -1,0 +1,17 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: api-passenger
+eureka:
+  instance:
+    # 心跳续约间隔
+    lease-renewal-interval-in-seconds: 10
+    # 缺心跳过期时间
+    lease-expiration-duration-in-seconds: 10
+    # 可以设置饥饿加载，防止第一次请求超时
+  client:
+    serviceUrl:
+      defaultZone: http://euk.com:7900/eureka/,http://euk.com:7901/eureka/,http://euk.com:7902/eureka/
+    # 刷新注册表（拉取注册表）间隔
+    registry-fetch-interval-seconds: 5
