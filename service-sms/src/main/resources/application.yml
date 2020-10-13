@@ -1,10 +1,41 @@
 server:
-  port: 8081
+  port: 8003
 
 spring:
   application:
     name: service-sms
+  datasource:
+    # 数据源操作类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    # MySQL的驱动程序类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/online-taxi?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    # 数据库连接池的配置
+    dbcp2:
+      # 数据库连接池的初始化连接数
+      initial-size: 5
+      # 数据库连接池的最小维持连接数
+      min-idle: 5
+      # 数据库连接池的最大的连接数
+      max-total: 5
+      # 等待连接获取的最大超时时间
+      max-wait-millis: 200
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+# mybatis配置
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
 
 eureka:
   client:
     enabled: false
+    service-url: http://127.0.0.1:7900/eureka/
+    registry-fetch-interval-seconds: 30
+  instance:
+    lease-renewal-interval-in-seconds: 30
