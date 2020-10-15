@@ -9,7 +9,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     # MySQL的驱动程序类
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/online-taxi?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/online_taxi?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     # 数据库连接池的配置
@@ -29,13 +29,20 @@ spring:
 
 # mybatis配置
 mybatis:
-  mapper-locations:
-    - classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    com:
+      yeyangshu:
+        servicesms:
+          dao: debug
 
 eureka:
   client:
-    enabled: false
-    service-url: http://127.0.0.1:7900/eureka/
+    enabled: true
+    service-url:
+      defaultZone: http://127.0.0.1:7900/eureka/
     registry-fetch-interval-seconds: 30
   instance:
     lease-renewal-interval-in-seconds: 30

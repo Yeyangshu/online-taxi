@@ -3,6 +3,7 @@ package com.yeyangshu.servicesms.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 短信模板数据库表<tt>service_sms_template</tt>
@@ -44,11 +45,11 @@ public class ServiceSmsTemplate implements Serializable {
     /**
      * 创建时间
      */
-    private String createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private String updateTime;
+    private Date updateTime;
 
 }

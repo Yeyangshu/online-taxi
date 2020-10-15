@@ -1,7 +1,6 @@
 package com.yeyangshu.servicesms.dao;
 
 import com.yeyangshu.servicesms.entity.ServiceSmsTemplate;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 短信模板dao
@@ -10,7 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @version 1.0
  * @date 2020/10/13 22:44
  */
-@Mapper
 public interface ServiceSmsTemplateCustomDao extends ServiceSmsTemplateDao {
 
     /**

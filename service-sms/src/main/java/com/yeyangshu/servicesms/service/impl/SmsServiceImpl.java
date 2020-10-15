@@ -47,7 +47,7 @@ public class SmsServiceImpl implements SmsService {
             List<SmsTemplateDto> templates = request.getData();
 
             ServiceSmsRecord smsRecord = new ServiceSmsRecord();
-            // 若内存中没有模板信息，从数据库中加载模板
+            // 若内存中没有模板信息，从数据库中加载模板，81B*10 1024 1K 10*1024 1M
             for (SmsTemplateDto template : templates) {
                 loadTemplateFromDB(templateMaps, template);
                 String content = "";
@@ -56,6 +56,7 @@ public class SmsServiceImpl implements SmsService {
                     int result = send(phoneNumber, template.getId(), template.getTemplateMap());
 
                     // 组装短信记录smsRecord对象
+                    smsRecord.setPhoneNumber(phoneNumber);
                     smsRecord.setSendTime(new Date());
                     smsRecord.setOperatorName("");
                     smsRecord.setSendFlag(1);
@@ -71,6 +72,7 @@ public class SmsServiceImpl implements SmsService {
                     log.error("发送短信（" + template.getId() + "）失败：" + phoneNumber, e);
                 } finally {
                     smsRecord.setCreateTime(new Date());
+                    smsRecord.setUpdateTime(new Date());
                     serviceSmsRecordDao.insert(smsRecord);
                 }
             }
@@ -108,13 +110,13 @@ public class SmsServiceImpl implements SmsService {
 
     /**
      * 发送短信
+     *
      * @param phoneNumber
      * @param templateId
      * @param map
      * @return
-     * @throws Exception
      */
-    private int send(String phoneNumber, String templateId, Map<String, ?> map) throws Exception {
+    private int send(String phoneNumber, String templateId, Map<String, ?> map) {
         JSONObject param = new JSONObject();
         param.putAll(map);
         return sendMsg(phoneNumber, templateId, param.toString());
@@ -122,6 +124,7 @@ public class SmsServiceImpl implements SmsService {
 
     /**
      * 供应商发送短信
+     *
      * @param phoneNumber
      * @param templateCode
      * @param param
