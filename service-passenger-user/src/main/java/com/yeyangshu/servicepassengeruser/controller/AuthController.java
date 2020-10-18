@@ -1,7 +1,6 @@
 package com.yeyangshu.servicepassengeruser.controller;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.LoginRequest;
 import com.yeyangshu.servicepassengeruser.service.PassengerUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
