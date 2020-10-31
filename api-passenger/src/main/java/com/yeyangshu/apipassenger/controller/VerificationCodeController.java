@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yeyangshu
  */
 @RestController
-@RequestMapping("/verify-code")
+@RequestMapping("/verificationCode")
 public class VerificationCodeController {
 
     @Autowired
