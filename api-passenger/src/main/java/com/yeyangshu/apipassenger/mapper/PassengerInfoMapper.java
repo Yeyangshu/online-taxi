@@ -1,8 +1,6 @@
 package com.yeyangshu.apipassenger.mapper;
 
 import com.yeyangshu.internalcommon.entity.PassengerInfo;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;

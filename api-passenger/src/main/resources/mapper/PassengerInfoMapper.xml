@@ -27,7 +27,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, phone, educatioan, birthday, passenger_name, register_time, balance, gender,
+        id, phone, education, birthday, passenger_name, register_time, balance, gender,
         head_img, passenger_type, user_level, register_type, last_login_time, last_login_method,
         last_login_screen_time, last_login_screen_method, last_order_time, create_time, update_time,
         is_contact, is_share, sharing_time
@@ -48,14 +48,14 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo" useGeneratedKeys="true" keyProperty="id">
-        insert into tbl_passenger_info (phone, educatioan, birthday,
+        insert into tbl_passenger_info (phone, education, birthday,
         passenger_name, register_time, balance,
         gender, head_img, passenger_type,
         user_level, register_type, last_login_time,
         last_login_method, last_login_screen_time,
         last_login_screen_method, last_order_time, create_time,
-        update_time,is_contact,is_share,sharing_time)
-        values (#{phone,jdbcType=VARCHAR}, #{educatioan,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
+        update_time, is_contact, is_share, sharing_time)
+        values (#{phone,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
         #{passengerName,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{balance,jdbcType=DECIMAL},
         #{gender,jdbcType=TINYINT}, #{headImg,jdbcType=VARCHAR}, #{passengerType,jdbcType=TINYINT},
         #{userLevel,jdbcType=TINYINT}, #{registerType,jdbcType=SMALLINT}, #{lastLoginTime,jdbcType=TIMESTAMP},
@@ -71,8 +71,8 @@
             <if test="phone != null">
                 phone,
             </if>
-            <if test="educatioan != null">
-                educatioan,
+            <if test="education != null">
+                education,
             </if>
             <if test="birthday != null">
                 birthday,
@@ -136,8 +136,8 @@
             <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="educatioan != null">
-                #{educatioan,jdbcType=VARCHAR},
+            <if test="education != null">
+                #{education,jdbcType=VARCHAR},
             </if>
             <if test="birthday != null">
                 #{birthday,jdbcType=DATE},
@@ -206,8 +206,8 @@
             <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="educatioan != null">
-                educatioan = #{educatioan,jdbcType=VARCHAR},
+            <if test="education != null">
+                education = #{education,jdbcType=VARCHAR},
             </if>
             <if test="birthday != null">
                 birthday = #{birthday,jdbcType=DATE},
@@ -271,10 +271,11 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo">
         update tbl_passenger_info
         set phone = #{phone,jdbcType=VARCHAR},
-        educatioan = #{educatioan,jdbcType=VARCHAR},
+        education = #{education,jdbcType=VARCHAR},
         birthday = #{birthday,jdbcType=DATE},
         passenger_name = #{passengerName,jdbcType=VARCHAR},
         register_time = #{registerTime,jdbcType=TIMESTAMP},
@@ -296,6 +297,7 @@
         sharing_time = #{sharingTime}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <select id="queryPassengerInfoByPhoneNum" parameterType="String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

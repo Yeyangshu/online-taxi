@@ -11,12 +11,11 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
-  
+
     <sql id="Base_Column_List">
     id, passenger_info_id, capital, give_fee, freeze_capital, freeze_give_fee, create_time, 
     update_time
   </sql>
-
     <insert id="insertSelective" parameterType="com.yeyangshu.internalcommon.entity.PassengerWallet">
         insert into tbl_passenger_wallet
         <trim prefix="(" suffix=")" suffixOverrides=",">

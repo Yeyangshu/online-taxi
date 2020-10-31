@@ -12,7 +12,6 @@ import lombok.Getter;
  * @date 2020/10/31 10:14
  */
 @Getter
-@AllArgsConstructor
 public enum IdentityEnum {
 
     /**

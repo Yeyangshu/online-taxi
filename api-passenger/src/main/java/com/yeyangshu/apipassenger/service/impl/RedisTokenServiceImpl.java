@@ -1,6 +1,7 @@
 package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.service.RedisTokenService;
+import com.yeyangshu.internalcommon.constant.RedisKeyPrefixConstant;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisTokenServiceImpl implements RedisTokenService {
 
-    /**
-     * token前缀
-     */
-    private static final String PRE_KEY = "token:";
-
     @Resource(name = "redisTemplate")
     private ValueOperations<String, String> vOps;
 
@@ -38,7 +34,7 @@ public class RedisTokenServiceImpl implements RedisTokenService {
      */
     @Override
     public void put(String phoneNum, String token, Integer expHours) {
-        vOps.set(PRE_KEY + phoneNum, token, expHours, TimeUnit.HOURS);
+        vOps.set(RedisKeyPrefixConstant.PASSENGER_LOGIN_TOKEN_APP_KEY_PRE + phoneNum, token, expHours, TimeUnit.HOURS);
     }
 
     /**
@@ -49,7 +45,7 @@ public class RedisTokenServiceImpl implements RedisTokenService {
      */
     @Override
     public String get(String phoneNum) {
-        return vOps.get(PRE_KEY + phoneNum);
+        return vOps.get(RedisKeyPrefixConstant.PASSENGER_LOGIN_TOKEN_APP_KEY_PRE + phoneNum);
     }
 
     /**
@@ -71,6 +67,6 @@ public class RedisTokenServiceImpl implements RedisTokenService {
      */
     @Override
     public void delete(String phoneNum) {
-        redisTemplate.delete(PRE_KEY + phoneNum);
+        redisTemplate.delete(RedisKeyPrefixConstant.PASSENGER_LOGIN_TOKEN_APP_KEY_PRE + phoneNum);
     }
 }

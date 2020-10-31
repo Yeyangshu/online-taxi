@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author yeyangshu
  * @version 1.0
- * @date 2020/10/31 13:55
+ * @date 2020/10/31 17:31
  */
 public interface PassengerWalletMapper {
 

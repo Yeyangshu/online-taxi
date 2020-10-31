@@ -3,6 +3,7 @@ package com.yeyangshu.apipassenger.service.impl;
 import com.yeyangshu.apipassenger.service.ServiceSmsRestTemplateService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
  * @version 1.0
  * @date 2020/10/13 21:21
  */
+@Service
 public class ServiceSmsRestTemplateServiceImpl implements ServiceSmsRestTemplateService {
 
     @Autowired
@@ -20,6 +22,6 @@ public class ServiceSmsRestTemplateServiceImpl implements ServiceSmsRestTemplate
 
     @Override
     public ResponseResult sendSms(String phoneNumber, String code) {
-        return null;
+        return ResponseResult.success("code");
     }
 }

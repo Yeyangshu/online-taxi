@@ -1,5 +1,7 @@
 package com.yeyangshu.internalcommon.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2020/10/31 15:16
  */
+@Data
 public class PassengerWallet {
 
     private Integer id;

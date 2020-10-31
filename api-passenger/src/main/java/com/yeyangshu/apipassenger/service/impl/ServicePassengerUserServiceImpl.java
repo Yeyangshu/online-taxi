@@ -2,6 +2,7 @@ package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.service.ServicePassengerUserService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

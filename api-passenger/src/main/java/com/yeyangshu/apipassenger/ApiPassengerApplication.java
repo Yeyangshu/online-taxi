@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@MapperScan("com.yeyangshu.apipassenger,mapper")
+@MapperScan("com.yeyangshu.apipassenger.mapper")
 public class ApiPassengerApplication {
 
     public static void main(String[] args) {

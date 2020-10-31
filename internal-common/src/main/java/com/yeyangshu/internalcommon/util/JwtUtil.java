@@ -13,7 +13,13 @@ import java.util.Date;
  * @author yeyangshu
  */
 public class JwtUtil {
+
     private static final String SECRET = "ko346134h_we]rg3in_yip1!";
+
+    /**
+     * token有效期 1天
+     */
+    private static final Integer EXP_HOURS = 24;
 
     /**
      * 生成jwt
@@ -23,12 +29,11 @@ public class JwtUtil {
      * @return
      */
     public static String createJavaWebToken(String subject, Date issueDate) {
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(issueDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        return token;
     }
 
     /**
@@ -42,10 +47,10 @@ public class JwtUtil {
         try {
             Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
             if (claims != null) {
-                JwtInfo ji = new JwtInfo();
-                ji.setSubject(claims.getSubject());
-                ji.setIssueDate(claims.getIssuedAt().getTime());
-                return ji;
+                JwtInfo jwtInfo = new JwtInfo();
+                jwtInfo.setSubject(claims.getSubject());
+                jwtInfo.setIssueDate(claims.getIssuedAt().getTime());
+                return jwtInfo;
             }
         } catch (ExpiredJwtException e) {
             e.printStackTrace();
