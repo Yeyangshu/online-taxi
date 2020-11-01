@@ -1,6 +1,6 @@
 package com.yeyangshu.servicepassengeruser.dao;
 
-import com.yeyangshu.internalcommon.entity.PassengerWallet;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet;
 import com.yeyangshu.servicepassengeruser.mapper.PassengerWalletMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

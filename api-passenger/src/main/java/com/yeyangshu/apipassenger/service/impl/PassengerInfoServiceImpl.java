@@ -5,21 +5,16 @@ import com.yeyangshu.apipassenger.dao.PassengerWalletDao;
 import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
 import com.yeyangshu.apipassenger.service.PassengerInfoService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.entity.PassengerAddress;
-import com.yeyangshu.internalcommon.entity.PassengerInfo;
-import com.yeyangshu.internalcommon.entity.PassengerRegisterSource;
-import com.yeyangshu.internalcommon.entity.PassengerWallet;
-import com.yeyangshu.internalcommon.util.EncryptUtil;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerRegisterSource;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * 乘客信息服务实现类

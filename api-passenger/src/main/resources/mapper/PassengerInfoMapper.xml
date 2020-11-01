@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yeyangshu.apipassenger.mapper.PassengerInfoMapper">
-    <resultMap id="BaseResultMap" type="com.yeyangshu.internalcommon.entity.PassengerInfo">
+    <resultMap id="BaseResultMap" type="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="education" property="education" jdbcType="VARCHAR"/>
@@ -47,7 +47,7 @@
         delete from tbl_passenger_info
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo" useGeneratedKeys="true" keyProperty="id">
         insert into tbl_passenger_info (phone, education, birthday,
         passenger_name, register_time, balance,
         gender, head_img, passenger_type,
@@ -64,7 +64,7 @@
         #{updateTime,jdbcType=TIMESTAMP}, #{contact}, #{share}, #{sharingTime})
 
     </insert>
-    <insert id="insertSelective" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo" useGeneratedKeys="true"
+    <insert id="insertSelective" parameterType="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo" useGeneratedKeys="true"
             keyProperty="id">
         insert into tbl_passenger_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -200,7 +200,7 @@
 
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo">
         update tbl_passenger_info
         <set>
             <if test="phone != null">
@@ -272,7 +272,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo">
+    <update id="updateByPrimaryKey" parameterType="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo">
         update tbl_passenger_info
         set phone = #{phone,jdbcType=VARCHAR},
         education = #{education,jdbcType=VARCHAR},
@@ -311,7 +311,7 @@
         where id=#{passengerId} and balance=#{oldBalance}
     </update>
 
-    <update id="updatePassengerInfoLoginTime" parameterType="com.yeyangshu.internalcommon.entity.PassengerInfo">
+    <update id="updatePassengerInfoLoginTime" parameterType="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo">
         update tbl_passenger_info
         set last_login_time = now()
         where id = #{id,jdbcType=INTEGER}

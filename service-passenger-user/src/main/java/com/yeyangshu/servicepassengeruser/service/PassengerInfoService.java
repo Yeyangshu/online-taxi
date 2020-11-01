@@ -2,8 +2,8 @@ package com.yeyangshu.servicepassengeruser.service;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
 import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
-import com.yeyangshu.internalcommon.entity.PassengerInfo;
-import com.yeyangshu.internalcommon.entity.PassengerRegisterSource;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerRegisterSource;
 
 import java.util.HashMap;
 

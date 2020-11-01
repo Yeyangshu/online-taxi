@@ -1,4 +1,4 @@
-package com.yeyangshu.internalcommon.entity;
+package com.yeyangshu.internalcommon.dto.servicepassengeruser;
 
 import lombok.Data;
 

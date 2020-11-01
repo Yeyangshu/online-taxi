@@ -1,7 +1,6 @@
 package com.yeyangshu.servicepassengeruser.mapper;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.entity.PassengerInfo;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
 
 import java.util.List;
 import java.util.Map;

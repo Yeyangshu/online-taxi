@@ -1,7 +1,6 @@
 package com.yeyangshu.apipassenger.mapper;
 
-import com.yeyangshu.internalcommon.entity.PassengerWallet;
-import org.springframework.stereotype.Service;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet;
 
 /**
  * @author yeyangshu

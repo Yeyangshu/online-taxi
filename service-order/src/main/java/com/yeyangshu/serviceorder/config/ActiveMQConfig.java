@@ -4,6 +4,8 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import javax.jms.Queue;
 
@@ -14,6 +16,7 @@ import javax.jms.Queue;
  * @version 1.0
  * @date 2020/10/26 22:21
  */
+@Configuration
 public class ActiveMQConfig {
 
     @Value("${spring.activemq.broker-url}")

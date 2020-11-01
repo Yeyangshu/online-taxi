@@ -1,6 +1,6 @@
 package com.yeyangshu.apipassenger.mapper;
 
-import com.yeyangshu.internalcommon.entity.PassengerRegisterSource;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerRegisterSource;
 
 /**
  * @author yeyangshu
