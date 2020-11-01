@@ -1,1 +1,63 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: service-valuation
+  # redis
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+  # datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/online-taxi?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      driver-class-name: com.mysql.jdbc.Driver
+      filters: stat,wall,slf4j
+      initialSize: 5
+      maxActive: 20
+      maxPoolPreparedStatementPerConnectionSize: 20
+      maxWait: 60000
+      minEvictableIdleTimeMillis: 300000
+      minIdle: 5
+      poolPreparedStatements: true
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+      useGlobalDataSourceStat: true
+      validationQuery: SELECT 'x'
+  activemq:
+    broker-url: tcp://127.0.0.1:61617
+    in-memory: false
+    pool:
+      enabled: true
+      max-connections: 100
 
+eureka:
+  instance:
+    # 心跳续约间隔
+    lease-renewal-interval-in-seconds: 10
+    # 缺心跳过期时间
+    lease-expiration-duration-in-seconds: 10
+    # 可以设置饥饿加载，防止第一次请求超时
+  client:
+    serviceUrl:
+      defaultZone: http://euk.com:7900/eureka/
+    # 刷新注册表（拉取注册表）间隔
+    registry-fetch-interval-seconds: 5
+
+#internal 程序内部
+logging:
+  #  config: classpath:log/logback-spring.xml
+  level:
+    com.yeyangshu.apipassenger.mapper: debug
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true

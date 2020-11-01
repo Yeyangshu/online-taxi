@@ -1,8 +1,8 @@
-package com.yeyangshu.apipassenger.service.impl;
+package com.yeyangshu.servicevaluation.service.impl;
 
-import com.yeyangshu.apipassenger.service.ServiceValuationService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
 import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
+import com.yeyangshu.servicevaluation.service.ServiceMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,21 +10,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * 调用计价服务
- *
  * @author yeyangshu
  * @version 1.0
- * @date 2020/11/1 22:52
+ * @date 2020/11/1 19:45
  */
 @Service
-public class ServiceValuationServiceImpl implements ServiceValuationService {
+public class ServiceMapServiceImpl implements ServiceMapService {
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Override
-    public ResponseResult queryEstimatePrice(EstimateRequest request) {
-        String url = "http://service-valuation/estimate/price";
+    public ResponseResult getRoute(EstimateRequest request) {
+        String url = "http://service-map/map/route";
         ResponseResult result = restTemplate.exchange(url, HttpMethod.POST,
                 new HttpEntity<Object>(request, null), ResponseResult.class).getBody();
         return result;

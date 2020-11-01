@@ -26,9 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     @Autowired
-    ServiceMapService serviceMapService;
-
-    @Autowired
     OrderService orderService;
 
     @PostMapping("/estimate")
