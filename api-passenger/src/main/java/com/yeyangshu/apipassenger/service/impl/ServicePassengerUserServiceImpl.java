@@ -2,6 +2,7 @@ package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.service.ServicePassengerUserService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
 import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -21,12 +22,10 @@ public class ServicePassengerUserServiceImpl implements ServicePassengerUserServ
     private RestTemplate restTemplate;
 
     @Override
-    public ResponseResult login(String passengerPhone) {
-        String url = "http://service-passenger-user/auth/login";
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setPassengerPhone(passengerPhone);
+    public ResponseResult queryPassenger(TokenRequest request) {
+        String url = "http://service-passenger-user/passenger/query";
         ResponseResult result = restTemplate.exchange(url, HttpMethod.POST,
-                new HttpEntity<Object>(loginRequest, null), ResponseResult.class).getBody();
+                new HttpEntity<Object>(request, null), ResponseResult.class).getBody();
         return result;
     }
 }

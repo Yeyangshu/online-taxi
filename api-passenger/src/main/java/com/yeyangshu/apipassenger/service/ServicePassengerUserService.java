@@ -1,6 +1,7 @@
 package com.yeyangshu.apipassenger.service;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
 
 /**
  * 调用登录服务
@@ -10,11 +11,11 @@ import com.yeyangshu.internalcommon.dto.ResponseResult;
 public interface ServicePassengerUserService {
 
     /**
-     * 手机登录
+     * 用户查询
      *
-     * @param passengerPhone
+     * @param request token信息
      * @return
      */
-    public ResponseResult login(String passengerPhone);
+    public ResponseResult queryPassenger(TokenRequest request);
 
 }

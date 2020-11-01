@@ -1,6 +1,5 @@
 package com.yeyangshu.apipassenger.constant;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**

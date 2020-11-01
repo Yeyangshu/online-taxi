@@ -1,4 +1,4 @@
-package com.yeyangshu.internalcommon.dto.apipassenger.request;
+package com.yeyangshu.internalcommon.dto.servicepassengeruser.request;
 
 import lombok.Data;
 
@@ -6,12 +6,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
- * 用户发送验证码信息接收类
+ * 手机号码信息接收类
  *
  * @author yeyangshu
  */
 @Data
-public class ShortMsgRequest {
+public class PhoneNumberRequest {
 
     /**
      * 用户手机号

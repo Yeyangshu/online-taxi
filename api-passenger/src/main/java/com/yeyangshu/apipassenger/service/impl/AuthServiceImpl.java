@@ -14,6 +14,7 @@ import com.yeyangshu.internalcommon.util.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,68 +72,29 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public ResponseResult auth(TokenRequest request) {
-        // 验证短信验证码
+        // 调用短信验证服务，验证短信验证码
+        log.info("invoke verification code service, verify code");
         ResponseResult responseResult = serviceVerificationCodeRestTemplateService
                 .verifyCode(IdentityConstant.PASSENGER, request.getPhoneNumber(), request.getVerifyCode());
         if (responseResult.getCode() != CommonStatusEnum.SUCCESS.getCode()) {
             return ResponseResult.fail("登录失败：验证码校验失败");
         }
         log.info("passenger start sign in");
-        String phoneNumber = request.getPhoneNumber();
-        String encryptPhoneNumber = EncryptUtil.toHexString(EncryptUtil.encrypt(phoneNumber));
-        log.info("乘客加密后的手机号：" + encryptPhoneNumber);
-        PassengerInfo passengerInfo = passengerInfoService.queryPassengerInfoByPhoneNum(encryptPhoneNumber);
-        log.info("根据手机号查询，乘客信息。" + passengerInfo);
-        PassengerInfo passengerInfoTemp = new PassengerInfo();
-        int passengerId;
-        int isNewPassenger = OLD_PASSENGER;
-        // 若查询不到乘客信息，记录乘客信息
-        if (null == passengerInfo) {
-            isNewPassenger = NEW_PASSENGER;
-            Date date = new Date();
-            passengerInfoTemp.setLastLoginTime(date);
-            passengerInfoTemp.setLastLoginMethod(METHOD);
-            passengerInfoTemp.setPhone(encryptPhoneNumber);
-            passengerInfoTemp.setBalance(new BigDecimal(0));
-            passengerInfoTemp.setRegisterTime(date);
-            passengerInfoTemp.setCreateTime(date);
-            passengerInfoTemp.setUpdateTime(date);
-            log.info("新增乘客手机号：" + encryptPhoneNumber);
-            passengerInfoService.insertPassengerInfo(passengerInfoTemp);
-            passengerId = passengerInfoTemp.getId();
-            // 新增注册来源
-            try {
-                PassengerRegisterSource passengerRegisterSource = new PassengerRegisterSource();
-                passengerRegisterSource.setPassengerInfoId(passengerId);
-                String registerSource = request.getRegisterSource();
-                passengerRegisterSource.setRegisterSource(registerSource);
-                passengerRegisterSource.setMarketChannel(request.getMarketChannel());
-                passengerRegisterSource.setCreateTime(new Date());
-                passengerInfoService.insertPassengerRegisterSource(passengerRegisterSource);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            log.info("乘客注册或登录 - " + encryptPhoneNumber + " - 校验注册状态 - 用户未注册，已插入新用户记录");
-            // 初始化乘客钱包
-            passengerInfoService.initPassengerWallet(passengerId);
-        } else {
-            log.info("乘客注册或登录 - " + encryptPhoneNumber + " - 校验注册状态 - 用户已注册");
-            // 若乘客登录或者注册过了，更新登录时间
-            passengerId = passengerInfo.getId();
-            passengerInfoService.updatePassengerInfoLoginTime(passengerId);
-        }
-        // 乘客登录，生成jwtStr
-        String subject = IdentityEnum.PASSENGER.getCode() + "_" + phoneNumber + "_" + passengerId;
-        log.info("token subject:" + subject);
-        String jwtStr = JwtUtil.createJavaWebToken(subject, new Date());
-        redisTokenService.put(subject, jwtStr, EXP_HOURS);
-        log.info("乘客注册或登录用户-" + phoneNumber + "- access_token:" + jwtStr);
-        // 多终端互踢
+        // 调用乘客服务，查询乘客信息
+        ResponseResult queryPassengerInfo = servicePassengerUserService.queryPassenger(request);
+        log.info("invoke passenger users service, query passenger info");
+
+        JSONObject jsonObject = JSONObject.fromObject(queryPassengerInfo.getData());
+        String jwtStr = (String) jsonObject.get("token");
+        PassengerInfo passengerInfo = (PassengerInfo) JSONObject.toBean(JSONObject.fromObject(
+                jsonObject.get("passengerInfo")), PassengerInfo.class);
+        int isNewPassenger = Integer.parseInt(jsonObject.get("isNewPassenger").toString());
+
         return createResponse(jwtStr, passengerInfo.getPassengerName(), passengerInfo.getGender(),
-                passengerInfo.getBalance(), phoneNumber, passengerInfo.getHeadImg(), passengerId,
+                passengerInfo.getBalance(), passengerInfo.getPhone(), passengerInfo.getHeadImg(), passengerInfo.getId(),
                 passengerInfo.getLastLoginTime(), passengerInfo.getLastLoginMethod(), passengerInfo.getContact(),
-                passengerInfo.getShare(), passengerInfo.getSharingTime(), passengerInfo.getBirthday() == null ? null : passengerInfo.getBirthday().getTime(),
-                isNewPassenger);
+                passengerInfo.getShare(), passengerInfo.getSharingTime(),
+                passengerInfo.getBirthday() == null ? null : passengerInfo.getBirthday().getTime(), isNewPassenger);
     }
 
     /**
