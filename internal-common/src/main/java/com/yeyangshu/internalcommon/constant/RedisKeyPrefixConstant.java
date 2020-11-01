@@ -20,6 +20,6 @@ public class RedisKeyPrefixConstant {
     /**
      * 乘客登陆token key前缀
      */
-    public static final String PASSENGER_LOGIN_TOKEN_APP_KEY_PRE = "passenger-login-token-app-";
+    public static final String PASSENGER_LOGIN_TOKEN_APP_KEY_PRE = "passenger-login-token-app_";
 
 }
