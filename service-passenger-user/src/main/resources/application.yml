@@ -1,0 +1,47 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: service-passenger-user
+  # redis
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/online-taxi?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 123456
+    dbcp2:
+      initial-size: 5
+      min-idle: 5
+      max-total: 5
+      max-wait-millis: 200
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+
+
+eureka:
+  instance:
+    # 心跳续约间隔
+    lease-renewal-interval-in-seconds: 10
+    # 缺心跳过期时间
+    lease-expiration-duration-in-seconds: 10
+    # 可以设置饥饿加载，防止第一次请求超时
+  client:
+    serviceUrl:
+      defaultZone: http://euk.com:7900/eureka/
+    # 刷新注册表（拉取注册表）间隔
+    registry-fetch-interval-seconds: 5
+
+
+

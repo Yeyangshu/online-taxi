@@ -1,13 +1,10 @@
 package com.yeyangshu.serviceorder.controller;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.PhoneNumberRequest;
+import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 import com.yeyangshu.serviceorder.service.OrderService;
-import com.yeyangshu.serviceorder.service.ServiceMapService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +25,9 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @PostMapping("/estimate")
-    public ResponseResult send(@RequestBody EstimateRequest request) throws Exception {
-        return orderService.estimateOrderCreate(request);
+    @PostMapping("/estimate-fee")
+    public ResponseResult estimateFee(@RequestBody OrderRequest request) throws Exception {
+        return orderService.estimateFee(request);
     }
 
 }

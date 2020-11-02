@@ -1,5 +1,6 @@
 package com.yeyangshu.servicepassengeruser.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yeyangshu.internalcommon.constant.IdentityEnum;
 import com.yeyangshu.internalcommon.constant.RedisKeyPrefixConstant;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
@@ -15,7 +16,6 @@ import com.yeyangshu.servicepassengeruser.service.PassengerInfoService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -76,7 +76,6 @@ public class PassengerInfoServiceImpl implements PassengerInfoService {
     @Override
     public PassengerInfo queryPassengerInfoById(Integer passengerId) {
         return passengerInfoDao.queryPassengerInfoById(passengerId);
-
     }
 
     @Override
@@ -127,7 +126,7 @@ public class PassengerInfoServiceImpl implements PassengerInfoService {
                 passengerRegisterSource.setCreateTime(new Date());
                 passengerInfoDao.insertPassengerRegisterSource(passengerRegisterSource);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("初始化乘客信息失败");
             }
             log.info("乘客注册或登录 - " + encryptPhoneNumber + " - 校验注册状态 - 用户未注册，已插入新用户记录");
             // 初始化乘客钱包
@@ -147,10 +146,10 @@ public class PassengerInfoServiceImpl implements PassengerInfoService {
         // 多终端互踢
         passengerInfo = passengerInfoDao.queryPassengerInfoByPhoneNum(encryptPhoneNumber);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("passengerInfo", passengerInfo);
+        jsonObject.put("passengerInfo", JSONObject.toJSONString(passengerInfo));
         jsonObject.put("token", jwtStr);
         jsonObject.put("isNewPassenger", isNewPassenger);
-        return ResponseResult.success(jsonObject);
+        return ResponseResult.success(JSONObject.toJSONString(jsonObject));
     }
 
     @Override

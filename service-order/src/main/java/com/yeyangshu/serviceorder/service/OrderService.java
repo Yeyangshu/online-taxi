@@ -1,8 +1,9 @@
 package com.yeyangshu.serviceorder.service;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
+import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 import com.yeyangshu.internalcommon.dto.serviceorder.OrderPrice;
+import com.yeyangshu.internalcommon.dto.servicevaluation.Rule;
 
 /**
  * 订单服务接口
@@ -14,11 +15,11 @@ import com.yeyangshu.internalcommon.dto.serviceorder.OrderPrice;
 public interface OrderService {
 
     /**
-     * 订单预估
+     * 预估价格
      *
      * @param request 预估价格信息类
      * @return 预估订单价格
      * @throws Exception 异常
      */
-    ResponseResult<OrderPrice> estimateOrderCreate(EstimateRequest request) throws Exception;
+    ResponseResult<OrderPrice> estimateFee(OrderRequest request) throws Exception;
 }

@@ -1,5 +1,6 @@
 package com.yeyangshu.serviceverificationcode.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yeyangshu.serviceverificationcode.service.VerifyCodeService;
 import com.yeyangshu.internalcommon.constant.CommonStatusEnum;
 import com.yeyangshu.internalcommon.constant.IdentityConstant;
@@ -33,7 +34,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
      * @return
      */
     @Override
-    public ResponseResult<VerifyCodeResponse> generate(int identity, String phoneNumber) {
+    public ResponseResult<VerifyCodeResponse> generateCode(int identity, String phoneNumber) {
         // 校验三档验证。乌云安全监测，也无妨控制，不能无限制发短信
         // Redis 1分钟发了3次后，不能发送，1小时发了10次，24小时不能发送
         String code = String.valueOf((int) ((Math.random() * 9 + 1) * Math.pow(10, 5)));
@@ -47,7 +48,8 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
         VerifyCodeResponse data = new VerifyCodeResponse();
         data.setCode(code);
-        return ResponseResult.success(data);
+        String jsonString = JSONObject.toJSONString(data);
+        return ResponseResult.success(jsonString);
     }
 
     /**

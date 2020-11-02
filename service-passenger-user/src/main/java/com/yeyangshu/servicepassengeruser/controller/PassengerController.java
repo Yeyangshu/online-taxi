@@ -4,16 +4,14 @@ import com.yeyangshu.internalcommon.constant.IdentityConstant;
 import com.yeyangshu.internalcommon.constant.PhoneStatusCodeEnum;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
 import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
+import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
 import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.PhoneNumberRequest;
 import com.yeyangshu.servicepassengeruser.service.PassengerInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -49,8 +47,19 @@ public class PassengerController {
             }
             return passengerInfoService.queryPassengerInfoByTokenRequest(request);
         } catch (Exception e) {
+            log.error("根据手机号查询用户操作异常", e);
+            return ResponseResult.fail(1, "根据手机号查询用户操作异常", request.getPhoneNumber());
+        }
+    }
+
+    @GetMapping("/query/{id}")
+    public ResponseResult<PassengerInfo> getPassengerInfoById(@PathVariable("id") Integer passengerId) {
+        try {
+            PassengerInfo passengerInfo = passengerInfoService.queryPassengerInfoById(passengerId);
+            return ResponseResult.success(passengerInfo);
+        } catch (Exception e) {
             log.error("操作异常", e);
-            return ResponseResult.fail(1, "操作异常", request.getPhoneNumber());
+            return ResponseResult.fail(1, "查询用户信息异常", String.valueOf(passengerId));
         }
     }
 }

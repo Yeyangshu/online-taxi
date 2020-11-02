@@ -22,7 +22,7 @@ public class VerifyCodeController {
 
     @GetMapping("/generate/{identity}/{phoneNumber}")
     public ResponseResult generate(@PathVariable("identity") int identity, @PathVariable("phoneNumber") String phoneNumber) {
-        return verifyCodeService.generate(identity, phoneNumber);
+        return verifyCodeService.generateCode(identity, phoneNumber);
     }
 
     @PostMapping("/verify")

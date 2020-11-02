@@ -1,8 +1,8 @@
 package com.yeyangshu.servicevaluation.controller;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
-import com.yeyangshu.servicevaluation.service.EstimateService;
+import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
+import com.yeyangshu.servicevaluation.service.ValuationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/11/1 23:11
  */
 @RestController
-@RequestMapping("/estimate")
+@RequestMapping("/valuation")
 @Slf4j
-public class EstimateController {
+public class ValuationController {
 
     @Autowired
-    EstimateService estimateService;
+    ValuationService valuationService;
 
     /**
      * 预估价格
@@ -29,15 +29,14 @@ public class EstimateController {
      * @param request
      * @return
      */
-    @PostMapping("/price")
-    public ResponseResult estimate(@RequestBody EstimateRequest request) {
+    @PostMapping("/rule")
+    public ResponseResult valuation(@RequestBody OrderRequest request) {
         ResponseResult responseResult;
         try {
-            responseResult = estimateService.estimatePrice(request);
+            responseResult = valuationService.valuationRule(request);
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("预估价格失败", e);
-            responseResult = ResponseResult.fail("预估价格失败");
+            log.error("获取计价规则失败", e);
+            responseResult = ResponseResult.fail("获取计价规则失败");
         }
         return responseResult;
     }

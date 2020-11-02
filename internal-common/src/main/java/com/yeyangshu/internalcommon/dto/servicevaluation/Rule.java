@@ -1,5 +1,7 @@
 package com.yeyangshu.internalcommon.dto.servicevaluation;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,7 @@ import java.util.List;
  * @version 1.0
  * @date 2020/11/1 22:02
  */
+@Data
 public class Rule {
 
     /**

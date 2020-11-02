@@ -1,7 +1,8 @@
-package com.yeyangshu.serviceorder.dao;
+package com.yeyangshu.serviceorder.mapper;
 
 import com.yeyangshu.serviceorder.entity.TblOrderEvent;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

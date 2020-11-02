@@ -17,7 +17,7 @@ public interface VerifyCodeService {
      * @param phoneNumber
      * @return
      */
-    public ResponseResult<VerifyCodeResponse> generate(int identity, String phoneNumber);
+    public ResponseResult<VerifyCodeResponse> generateCode(int identity, String phoneNumber);
 
     /**
      * 校验身份，手机号，验证码的合法性

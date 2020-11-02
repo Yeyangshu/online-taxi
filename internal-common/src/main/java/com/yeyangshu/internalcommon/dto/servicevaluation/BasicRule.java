@@ -15,6 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 public class BasicRule {
+
     /**
      * 基础价
      */

@@ -53,8 +53,8 @@ public class AuthController {
             request.setIdentityStatus(IdentityConstant.PASSENGER);
             return authService.auth(request);
         } catch (Exception e) {
-            log.error("操作异常", e);
-            return ResponseResult.fail(1, "操作异常", request.getPhoneNumber());
+            log.error("登录操作异常", e);
+            return ResponseResult.fail(1, "登录操作异常", request.getPhoneNumber());
         }
     }
 }

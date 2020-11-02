@@ -1,7 +1,7 @@
 package com.yeyangshu.serviceorder.service;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
+import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 
 /**
  * 地图服务
@@ -18,5 +18,5 @@ public interface ServiceMapService {
      * @param request 请求信息
      * @return Route结果
      */
-    ResponseResult getRoute(EstimateRequest request);
+    ResponseResult getRoute(OrderRequest request);
 }

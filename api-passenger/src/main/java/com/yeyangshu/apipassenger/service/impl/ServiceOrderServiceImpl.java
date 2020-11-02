@@ -1,8 +1,8 @@
-package com.yeyangshu.serviceorder.service.impl;
+package com.yeyangshu.apipassenger.service.impl;
 
+import com.yeyangshu.apipassenger.service.ServiceOrderService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
 import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
-import com.yeyangshu.serviceorder.service.ServiceMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,19 +10,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * 调用计价服务
+ *
  * @author yeyangshu
  * @version 1.0
- * @date 2020/11/1 19:45
+ * @date 2020/11/1 22:52
  */
 @Service
-public class ServiceMapServiceImpl implements ServiceMapService {
+public class ServiceOrderServiceImpl implements ServiceOrderService {
 
     @Autowired
-    private RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
     @Override
-    public ResponseResult getRoute(OrderRequest request) {
-        String url = "http://service-map/map/route";
+    public ResponseResult queryEstimateFee(OrderRequest request) {
+        String url = "http://service-order/order/estimate-fee";
         ResponseResult result = restTemplate.exchange(url, HttpMethod.POST,
                 new HttpEntity<Object>(request, null), ResponseResult.class).getBody();
         return result;
