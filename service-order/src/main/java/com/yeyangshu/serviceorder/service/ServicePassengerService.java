@@ -5,5 +5,5 @@ import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
 
 public interface ServicePassengerService {
 
-    ResponseResult<PassengerInfo> selectByPrimaryKey(Integer passengerId);
+    ResponseResult selectByPrimaryKey(Integer passengerId);
 }

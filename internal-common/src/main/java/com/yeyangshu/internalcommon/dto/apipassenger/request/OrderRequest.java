@@ -1,6 +1,6 @@
 package com.yeyangshu.internalcommon.dto.apipassenger.request;
 
-import com.yeyangshu.internalcommon.dto.serviceorder.Order;
+import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
 import lombok.Data;
 
 import java.math.BigDecimal;

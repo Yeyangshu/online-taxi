@@ -1,7 +1,6 @@
 package com.yeyangshu.apipassenger.service;
 
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 
 /**
  * 预估价格服务接口

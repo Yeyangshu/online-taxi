@@ -1,8 +1,6 @@
 package com.yeyangshu.servicevaluation.service.impl;
 
-import com.yeyangshu.internalcommon.constant.CommonStatusEnum;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 import com.yeyangshu.internalcommon.dto.servicevaluation.BasicRule;
 import com.yeyangshu.internalcommon.dto.servicevaluation.ChargeRule;
 import com.yeyangshu.internalcommon.dto.servicevaluation.Rule;
@@ -11,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 计价服务实现类

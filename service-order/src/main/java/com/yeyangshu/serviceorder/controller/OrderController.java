@@ -30,4 +30,16 @@ public class OrderController {
         return orderService.estimateFee(request);
     }
 
+    /**
+     * 叫车
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/place-order")
+    public ResponseResult callCar(@RequestBody OrderRequest request) throws Exception {
+        return orderService.callCar(request);
+    }
+
 }

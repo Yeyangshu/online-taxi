@@ -2,7 +2,6 @@ package com.yeyangshu.apipassenger.controller;
 
 import com.yeyangshu.apipassenger.service.OrderService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,19 +43,19 @@ public class OrderController {
     }
 
     /**
-     * 下单
+     * 下单叫车
      *
      * @param request
      * @return
      */
-    @PostMapping("/order")
+    @PostMapping("/place-order")
     public ResponseResult createOrder(@RequestBody OrderRequest request) {
         ResponseResult responseResult;
         try {
-            responseResult = orderService.queryEstimateFee(request);
+            responseResult = orderService.createOrder(request);
         } catch (Exception e) {
-            log.error("订单预估失败", e);
-            responseResult = ResponseResult.fail("订单预估失败");
+            log.error("下单叫车失败",e);
+            responseResult= ResponseResult.fail("下单叫车失败");
         }
         return responseResult;
     }

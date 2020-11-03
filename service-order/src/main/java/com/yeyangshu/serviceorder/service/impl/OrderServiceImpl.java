@@ -6,11 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeyangshu.internalcommon.constant.*;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
 import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
-import com.yeyangshu.internalcommon.dto.serviceorder.Order;
 import com.yeyangshu.internalcommon.dto.serviceorder.OrderPrice;
 import com.yeyangshu.internalcommon.dto.serviceorder.OrderRuleMirror;
+import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
 import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
+import com.yeyangshu.internalcommon.dto.servicevaluation.KeyRule;
 import com.yeyangshu.internalcommon.dto.servicevaluation.Rule;
+import com.yeyangshu.internalcommon.dto.servicevaluation.TagPrice;
+import com.yeyangshu.internalcommon.util.EncryptUtil;
 import com.yeyangshu.serviceorder.IdGenerator;
 import com.yeyangshu.internalcommon.util.ResponseResultHelper;
 import com.yeyangshu.serviceorder.dao.OrderDao;
@@ -20,14 +23,20 @@ import com.yeyangshu.serviceorder.service.OrderService;
 import com.yeyangshu.serviceorder.service.ServiceMapService;
 import com.yeyangshu.serviceorder.service.ServicePassengerService;
 import com.yeyangshu.serviceorder.service.ServiceValuationService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -150,7 +159,6 @@ public class OrderServiceImpl implements OrderService {
 //                orderPrice.setPrice(priceResult.getPrice());
                 orderPrice.setPrice(20.00);
             } catch (Exception e) {
-                e.printStackTrace();
                 log.error("计价接口发生错误", e);
                 throw e;
             }
@@ -170,6 +178,94 @@ public class OrderServiceImpl implements OrderService {
 //        jsonObject.put("orderPrice", JSONObject.toJSONString(orderPrice));
 //        jsonObject.put("rule", JSONObject.toJSONString(rule));
 //        return ResponseResult.success(jsonObject);
+    }
+
+    @Override
+    public ResponseResult callCar(OrderRequest request) throws Exception {
+        ResponseResult responseResult;
+
+        Integer orderId = request.getOrderId();
+        if (StringUtils.isEmpty(orderId)) {
+            log.error("订单Id为空");
+            return ResponseResult.fail(CommonStatusEnum.FAIL.getCode(), "订单Id为空");
+        }
+        // 查找订单
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        Rule newRule = null;
+
+        try {
+            // 数据库中查找预估价格的计价规则
+            Rule oldRule = parse(orderRuleMirrorMapper.selectByPrimaryKey(orderId).getRule(), Rule.class);
+            KeyRule keyRule = oldRule.getKeyRule();
+            request.setCarLevelId(keyRule.getCarLevelId());
+            request.setCarLevelName(keyRule.getCarLevelName());
+            request.setServiceTypeId(keyRule.getServiceTypeId());
+            request.setServiceTypeName(keyRule.getServiceTypeName());
+            request.setChannelId(keyRule.getChannelId());
+            request.setChannelName(keyRule.getChannelName());
+            request.setCityCode(keyRule.getCityCode());
+            request.setCityName(keyRule.getCityName());
+            request.setUserFeature(order.getUserFeature());
+            responseResult = serviceValuationService.getValuationRule(request);
+            // 调用计价服务重新计价，防止薅羊毛
+            if (CommonStatusEnum.SUCCESS.getCode() != responseResult.getCode()) {
+                return responseResult;
+            }
+            // 解析老的计价规则
+            newRule = ResponseResultHelper.parse(responseResult, Rule.class);
+            flag = false;
+            responseResult = insertOrUpdateOrderRuleMirror(newRule, orderId);
+            if (CommonStatusEnum.SUCCESS.getCode() != responseResult.getCode()) {
+                return responseResult;
+            }
+            if (!assertSameRule(oldRule, newRule)) {
+                log.error("计价规则有变，originalRule={}，newestRule={}", oldRule, newRule);
+                return ResponseResult.fail(CommonStatusEnum.FAIL.getCode(), VALUATION_RULES_CHANGE);
+            }
+        } catch (Exception e) {
+            log.error("重新预估价格失败");
+        }
+
+        // 订单开始
+        order.setStartTime(new Date());
+        if (OrderEnum.SERVICE_TYPE.getCode() == request.getServiceTypeId()) {
+            order.setOrderStartTime(new Date());
+        }
+        order.setStatus(OrderStatusEnum.STATUS_ORDER_START.getCode());
+        order.setOrderType(request.getOrderType());
+        // 判断是否为他人订单
+        String otherPhone = null;
+        if (request.getOrderType() == OrderEnum.ORDER_TYPE_OTHER.getCode()) {
+            if (StringUtils.isEmpty(request.getOtherPhone())) {
+                log.error("给他人叫车，手机号为空！");
+                return ResponseResult.fail(CommonStatusEnum.FAIL.getCode(), "给它人叫车，手机号不能为空！");
+            }
+            otherPhone = EncryptUtil.encryptionPhoneNumber(request.getOtherPhone());
+            order.setOtherName(request.getOtherName());
+        } else {
+            // 调用服务
+            responseResult = servicePassengerService.selectByPrimaryKey(order.getPassengerInfoId());
+            PassengerInfo passengerInfo = ResponseResultHelper.parse(responseResult, PassengerInfo.class);
+            otherPhone = passengerInfo.getPhone();
+            if (StringUtils.isEmpty(otherPhone)) {
+                order.setOtherName(passengerInfo.getPassengerName());
+            }
+        }
+        order.setOtherPhone(otherPhone);
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        BoundValueOperations<String, String> ops = redisTemplate.boundValueOps(String.format("%s:%s:%s",
+                OrderRuleNameConstant.PREFIX, OrderRuleNameConstant.RULE, orderId));
+        ops.set(new ObjectMapper().writeValueAsString(newRule));
+        // 最终定价(未实现)
+        responseResult = serviceValuationService.donePrice(request);
+        if (CommonStatusEnum.SUCCESS.getCode() != responseResult.getCode()) {
+            return responseResult;
+        }
+
+        // 调用派单服务开始派单
+
+        return ResponseResult.success("success");
     }
 
     /**
@@ -257,7 +353,6 @@ public class OrderServiceImpl implements OrderService {
                 orderDao.insertOrder(order);
             } catch (Exception e) {
                 log.info("新增订单失败");
-                e.printStackTrace();
             }
             return ResponseResult.success(order);
         } else {
@@ -292,7 +387,6 @@ public class OrderServiceImpl implements OrderService {
             }
         } catch (JsonProcessingException e) {
             log.error("插入或更新计价规则失败");
-            e.printStackTrace();
         }
         return ResponseResult.success("success");
     }
@@ -313,6 +407,59 @@ public class OrderServiceImpl implements OrderService {
             return ResponseResult.fail(CommonStatusEnum.FAIL.getCode(), "更新失败");
         }
         return ResponseResult.success("success");
+    }
+
+    /**
+     * 字符串转实体类
+     *
+     * @param jsonStr
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    private static <T> T parse(String jsonStr, Class<T> clazz) {
+        ObjectMapper om = new ObjectMapper();
+        T readValue = null;
+        try {
+            readValue = om.readValue(jsonStr, clazz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return readValue;
+    }
+
+    /**
+     * 判断计价规则是否一致
+     *
+     * @param oldRule 计价规则1
+     * @param newRule 计价规则2
+     * @return true：一致，否则false
+     */
+    @SneakyThrows
+    private boolean assertSameRule(Rule oldRule, Rule newRule) {
+        Rule oldRuleClone = new Rule();
+        BeanUtils.copyProperties(oldRule, oldRuleClone);
+        oldRuleClone.setTagPrices(null);
+
+        Rule newRuleClone = new Rule();
+        BeanUtils.copyProperties(newRule, newRuleClone);
+        newRuleClone.setTagPrices(null);
+
+        //非标签计价比较
+        ObjectMapper mapper = new ObjectMapper();
+        if (!ObjectUtils.nullSafeEquals(mapper.writeValueAsString(newRuleClone), mapper.writeValueAsString(oldRuleClone))) {
+            return false;
+        }
+
+        //标签计价比较
+        List<TagPrice> oldRuleTagPrices = Optional.ofNullable(oldRule.getTagPrices()).orElse(new ArrayList<>());
+        List<TagPrice> newRuleTagPrices = Optional.ofNullable(newRule.getTagPrices()).orElse(new ArrayList<>());
+        for (TagPrice tagPrice : oldRuleTagPrices) {
+            if (newRuleTagPrices.stream().anyMatch(p -> p.getName().equals(tagPrice.getName()) && p.getPrice().compareTo(tagPrice.getPrice()) != 0)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

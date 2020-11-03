@@ -18,7 +18,7 @@ public class ServicePassengerServiceImpl implements ServicePassengerService {
     RestTemplate restTemplate;
 
     @Override
-    public ResponseResult<PassengerInfo> selectByPrimaryKey(Integer passengerId) {
+    public ResponseResult selectByPrimaryKey(Integer passengerId) {
         String url = "http://service-passenger-user/passenger/query/" + passengerId;
         log.info("invoke service-passenger-user service, url is " + url);
         ResponseResult responseResult = restTemplate.exchange(url, HttpMethod.GET,

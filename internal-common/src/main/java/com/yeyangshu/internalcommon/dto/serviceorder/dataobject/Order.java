@@ -1,4 +1,4 @@
-package com.yeyangshu.internalcommon.dto.serviceorder;
+package com.yeyangshu.internalcommon.dto.serviceorder.dataobject;
 
 import lombok.Data;
 

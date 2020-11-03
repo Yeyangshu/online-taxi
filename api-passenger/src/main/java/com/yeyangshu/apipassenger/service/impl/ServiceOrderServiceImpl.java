@@ -2,7 +2,6 @@ package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.service.ServiceOrderService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,6 +24,14 @@ public class ServiceOrderServiceImpl implements ServiceOrderService {
     @Override
     public ResponseResult queryEstimateFee(OrderRequest request) {
         String url = "http://service-order/order/estimate-fee";
+        ResponseResult result = restTemplate.exchange(url, HttpMethod.POST,
+                new HttpEntity<Object>(request, null), ResponseResult.class).getBody();
+        return result;
+    }
+
+    @Override
+    public ResponseResult createOrder(OrderRequest request) {
+        String url = "http://service-order/order/place-order";
         ResponseResult result = restTemplate.exchange(url, HttpMethod.POST,
                 new HttpEntity<Object>(request, null), ResponseResult.class).getBody();
         return result;

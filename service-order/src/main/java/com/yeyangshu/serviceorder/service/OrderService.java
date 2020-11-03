@@ -22,4 +22,13 @@ public interface OrderService {
      * @throws Exception 异常
      */
     ResponseResult<OrderPrice> estimateFee(OrderRequest request) throws Exception;
+    /**
+     * 叫车
+     *
+     * @param request 订单信息
+     * @return 叫车
+     * @throws Exception 异常
+     */
+    ResponseResult callCar(OrderRequest request) throws Exception;
+
 }

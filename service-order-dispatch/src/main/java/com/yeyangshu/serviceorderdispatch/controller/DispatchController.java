@@ -1,0 +1,35 @@
+package com.yeyangshu.serviceorderdispatch.controller;
+
+import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.dto.serviceorderdispatch.datatransferobject.DispatchOrderRequest;
+import com.yeyangshu.serviceorderdispatch.schedule.TaskManager;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Slf4j
+@RequestMapping("/dispatch")
+public class DispatchController {
+
+    @Autowired
+    TaskManager taskManager;
+
+    /**
+     * 派单
+     *
+     * @param request
+     * @return
+     * @throws InterruptedException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/dispatchOrder", produces = "application/json; charset=utf-8")
+    public ResponseResult dispatchOrder(@RequestBody DispatchOrderRequest request) throws InterruptedException {
+        int orderId = request.getOrderId();
+        taskManager.dispatch(orderId);
+        return ResponseResult.success("success");
+    }
+}

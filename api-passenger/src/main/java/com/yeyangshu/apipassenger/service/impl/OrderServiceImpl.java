@@ -3,7 +3,6 @@ package com.yeyangshu.apipassenger.service.impl;
 import com.yeyangshu.apipassenger.service.OrderService;
 import com.yeyangshu.apipassenger.service.ServiceOrderService;
 import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +35,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseResult createOrder(OrderRequest request) {
         ResponseResult responseResult;
-        // 调用估价服务，预估价格
-        responseResult = serviceOrderService.queryEstimateFee(request);
+        // 调用计价服务，查新预估价格，防止薅羊毛
+        responseResult = serviceOrderService.createOrder(request);
         return responseResult;
     }
 }

@@ -1,7 +1,7 @@
 package com.yeyangshu.serviceorder.mapper;
 
 import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
-import com.yeyangshu.internalcommon.dto.serviceorder.Order;
+import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -11,8 +11,6 @@ import java.util.Map;
  */
 @Service
 public interface OrderMapper {
-
-    int deleteByPrimaryKey(Integer id);
 
     int insert(Order record);
 

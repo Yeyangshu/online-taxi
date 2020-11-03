@@ -15,4 +15,6 @@ public interface ServiceValuationService {
      * @return
      */
     ResponseResult getValuationRule(OrderRequest request);
+
+    ResponseResult donePrice(OrderRequest request);
 }
