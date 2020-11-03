@@ -1,7 +1,7 @@
 package com.yeyangshu.internalcommon.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 

@@ -1,9 +1,9 @@
 package com.yeyangshu.servicevaluation.service.impl;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicevaluation.BasicRule;
-import com.yeyangshu.internalcommon.dto.servicevaluation.ChargeRule;
-import com.yeyangshu.internalcommon.dto.servicevaluation.Rule;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicevaluation.dataobject.BasicRule;
+import com.yeyangshu.internalcommon.entity.servicevaluation.dataobject.ChargeRule;
+import com.yeyangshu.internalcommon.entity.servicevaluation.dataobject.Rule;
 import com.yeyangshu.servicevaluation.service.ValuationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

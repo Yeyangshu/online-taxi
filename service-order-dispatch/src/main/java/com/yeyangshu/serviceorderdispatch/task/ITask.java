@@ -1,8 +1,8 @@
 package com.yeyangshu.serviceorderdispatch.task;
 
 
-import com.yeyangshu.internalcommon.dto.serviceorder.OrderRulePrice;
-import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.OrderRulePrice;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.Order;
 
 
 import java.util.List;

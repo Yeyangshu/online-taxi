@@ -1,14 +1,14 @@
 package com.yeyangshu.serviceorderdispatch.service;
 
-import com.yeyangshu.internalcommon.dto.BoundPhoneDto;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicemap.datatransferobject.*;
-import com.yeyangshu.internalcommon.dto.servicemessage.datatransferobject.PushLoopBatchRequest;
-import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
-import com.yeyangshu.internalcommon.dto.serviceorderdispatch.datatransferobject.PushRequest;
-import com.yeyangshu.internalcommon.dto.servicesms.SmsTemplateDto;
-import com.yeyangshu.internalcommon.dto.servicesms.dto.SmsRequest;
-import com.yeyangshu.internalcommon.dto.servicesms.request.SmsSendRequest;
+import com.yeyangshu.internalcommon.entity.servicefile.datatransferobject.BoundPhoneDto;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicemap.datatransferobject.*;
+import com.yeyangshu.internalcommon.entity.servicemessage.datatransferobject.PushLoopBatchRequest;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.Order;
+import com.yeyangshu.internalcommon.entity.serviceorderdispatch.datatransferobject.PushRequest;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsTemplateDto;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsRequest;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsSendRequest;
 import com.yeyangshu.internalcommon.util.DateUtils;
 import com.yeyangshu.internalcommon.util.ResponseResultHelper;
 import lombok.extern.slf4j.Slf4j;

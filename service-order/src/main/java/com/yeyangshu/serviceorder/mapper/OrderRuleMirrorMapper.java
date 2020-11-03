@@ -1,7 +1,7 @@
 package com.yeyangshu.serviceorder.mapper;
 
 
-import com.yeyangshu.internalcommon.dto.serviceorder.OrderRuleMirror;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.OrderRuleMirror;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,7 +1,7 @@
 package com.yeyangshu.servicesms.controller;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicesms.request.SmsSendRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsSendRequest;
 import com.yeyangshu.servicesms.service.SmsService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;

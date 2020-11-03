@@ -1,7 +1,7 @@
 package com.yeyangshu.apipassenger.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.TokenRequest;
 
 /**
  * 登录验证服务

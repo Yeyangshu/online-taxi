@@ -2,7 +2,7 @@ package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.service.OrderService;
 import com.yeyangshu.apipassenger.service.ServiceOrderService;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

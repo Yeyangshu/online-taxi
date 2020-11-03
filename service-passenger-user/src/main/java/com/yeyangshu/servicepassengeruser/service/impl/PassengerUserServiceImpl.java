@@ -1,7 +1,7 @@
 package com.yeyangshu.servicepassengeruser.service.impl;
 
 import com.yeyangshu.internalcommon.constant.RedisKeyPrefixConstant;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 import com.yeyangshu.internalcommon.util.JwtUtil;
 import com.yeyangshu.servicepassengeruser.dao.ServicePassengerUserInfoCustomDao;
 import com.yeyangshu.servicepassengeruser.service.PassengerUserService;

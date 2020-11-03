@@ -1,7 +1,7 @@
 package com.yeyangshu.apipassenger.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.EstimateRequest;
 
 /**
  * @author yeyangshu

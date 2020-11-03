@@ -1,7 +1,7 @@
 package com.yeyangshu.servicepassengeruser.dao;
 
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerRegisterSource;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerInfo;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerRegisterSource;
 import com.yeyangshu.servicepassengeruser.mapper.PassengerInfoMapper;
 import com.yeyangshu.servicepassengeruser.mapper.PassengerRegisterSourceMapper;
 import lombok.NonNull;

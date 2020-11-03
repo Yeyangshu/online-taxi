@@ -1,8 +1,8 @@
 package com.yeyangshu.apipassenger.controller;
 
 import com.yeyangshu.apipassenger.service.VerificationCodeService;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.PhoneNumberRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.datatransferobject.PhoneNumberRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

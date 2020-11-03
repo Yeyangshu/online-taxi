@@ -1,7 +1,6 @@
 package com.yeyangshu.serviceorder.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 
 public interface ServicePassengerService {
 

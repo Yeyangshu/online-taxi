@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorderdispatch.mapper;
 
-import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.Order;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

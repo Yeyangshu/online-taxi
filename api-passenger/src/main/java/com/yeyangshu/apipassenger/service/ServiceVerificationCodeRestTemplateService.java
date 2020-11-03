@@ -1,6 +1,6 @@
 package com.yeyangshu.apipassenger.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 
 /**
  * 调用生成短信验证码服务

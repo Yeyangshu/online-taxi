@@ -1,9 +1,8 @@
 package com.yeyangshu.serviceorder.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
-import com.yeyangshu.internalcommon.dto.serviceorder.OrderPrice;
-import com.yeyangshu.internalcommon.dto.servicevaluation.Rule;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.OrderRequest;
+import com.yeyangshu.internalcommon.entity.serviceorder.OrderPrice;
 
 /**
  * 订单服务接口

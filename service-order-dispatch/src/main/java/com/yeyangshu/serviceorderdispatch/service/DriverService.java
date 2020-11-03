@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorderdispatch.service;
 
-import com.yeyangshu.internalcommon.dto.serviceorderdispatch.dataobject.DriverInfo;
+import com.yeyangshu.internalcommon.entity.serviceorderdispatch.dataobject.DriverInfo;
 import com.yeyangshu.serviceorderdispatch.mapper.DriverInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

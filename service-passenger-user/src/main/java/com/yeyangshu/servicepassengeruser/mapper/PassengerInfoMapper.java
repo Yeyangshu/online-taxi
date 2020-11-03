@@ -1,7 +1,6 @@
 package com.yeyangshu.servicepassengeruser.mapper;
 
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
-import org.springframework.stereotype.Repository;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

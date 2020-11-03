@@ -1,7 +1,6 @@
 package com.yeyangshu.serviceorder.service.impl;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 import com.yeyangshu.serviceorder.service.ServicePassengerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.yeyangshu.servicemap.controller;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
-import com.yeyangshu.internalcommon.dto.servicemap.RouteInfo;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.EstimateRequest;
+import com.yeyangshu.internalcommon.entity.servicemap.datatransferobject.RouteInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

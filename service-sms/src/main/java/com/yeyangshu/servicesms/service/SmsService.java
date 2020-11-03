@@ -1,7 +1,7 @@
 package com.yeyangshu.servicesms.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicesms.request.SmsSendRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsSendRequest;
 
 /**
  * 第三方短信发送服务

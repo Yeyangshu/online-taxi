@@ -1,7 +1,7 @@
 package com.yeyangshu.servicevaluation.service.impl;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.EstimateRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.EstimateRequest;
 import com.yeyangshu.servicevaluation.service.ServiceMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

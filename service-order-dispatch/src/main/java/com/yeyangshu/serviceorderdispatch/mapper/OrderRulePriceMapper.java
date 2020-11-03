@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorderdispatch.mapper;
 
-import com.yeyangshu.internalcommon.dto.serviceorder.OrderRulePrice;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.OrderRulePrice;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;

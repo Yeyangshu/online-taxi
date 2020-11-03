@@ -1,7 +1,7 @@
 package com.yeyangshu.serviceorder.mapper;
 
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
-import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.OrderRequest;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

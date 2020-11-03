@@ -1,6 +1,6 @@
 package com.yeyangshu.servicevaluation.controller;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 import com.yeyangshu.servicevaluation.service.ValuationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

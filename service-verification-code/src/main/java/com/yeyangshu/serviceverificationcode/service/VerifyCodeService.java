@@ -1,7 +1,7 @@
 package com.yeyangshu.serviceverificationcode.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.serviceverificationcode.response.VerifyCodeResponse;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.serviceverificationcode.datatransferobject.VerifyCodeResponse;
 
 /**
  * 验证码服务

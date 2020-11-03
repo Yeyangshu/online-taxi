@@ -1,11 +1,9 @@
 package com.yeyangshu.servicepassengeruser.controller;
 
-import com.yeyangshu.internalcommon.constant.IdentityConstant;
 import com.yeyangshu.internalcommon.constant.PhoneStatusCodeEnum;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.request.PhoneNumberRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.TokenRequest;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerInfo;
 import com.yeyangshu.servicepassengeruser.service.PassengerInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

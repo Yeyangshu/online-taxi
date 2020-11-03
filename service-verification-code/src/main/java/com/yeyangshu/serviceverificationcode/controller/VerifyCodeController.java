@@ -1,8 +1,8 @@
 package com.yeyangshu.serviceverificationcode.controller;
 
 import com.yeyangshu.serviceverificationcode.service.VerifyCodeService;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.serviceverificationcode.request.VerifyCodeRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.serviceverificationcode.datatransferobject.VerifyCodeRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorder.dao;
 
-import com.yeyangshu.internalcommon.dto.serviceorder.dataobject.Order;
+import com.yeyangshu.internalcommon.entity.serviceorder.dataobject.Order;
 import com.yeyangshu.serviceorder.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

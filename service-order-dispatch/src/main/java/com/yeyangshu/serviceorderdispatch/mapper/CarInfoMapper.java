@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorderdispatch.mapper;
 
-import com.yeyangshu.internalcommon.dto.serviceorderdispatch.dataobject.CarInfo;
+import com.yeyangshu.internalcommon.entity.serviceorderdispatch.dataobject.CarInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Service;
 

@@ -2,12 +2,12 @@ package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.dao.PassengerInfoDao;
 import com.yeyangshu.apipassenger.dao.PassengerWalletDao;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.TokenRequest;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.TokenRequest;
 import com.yeyangshu.apipassenger.service.PassengerInfoService;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerRegisterSource;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerInfo;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerRegisterSource;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerWallet;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

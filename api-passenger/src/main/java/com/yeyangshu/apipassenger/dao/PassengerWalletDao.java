@@ -1,7 +1,7 @@
 package com.yeyangshu.apipassenger.dao;
 
 import com.yeyangshu.apipassenger.mapper.PassengerWalletMapper;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerWallet;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 package com.yeyangshu.serviceorder.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.apipassenger.request.OrderRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.apipassenger.datatransferobject.OrderRequest;
 
 /**
  * 地图服务

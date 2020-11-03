@@ -2,8 +2,8 @@ package com.yeyangshu.apipassenger.dao;
 
 import com.yeyangshu.apipassenger.mapper.PassengerInfoMapper;
 import com.yeyangshu.apipassenger.mapper.PassengerRegisterSourceMapper;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerInfo;
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerRegisterSource;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerInfo;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerRegisterSource;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

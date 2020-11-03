@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeyangshu.servicepassengeruser.mapper.PassengerWalletMapper">
-    <resultMap id="BaseResultMap" type="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet">
+    <resultMap id="BaseResultMap" type="com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerWallet">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="passenger_info_id" jdbcType="INTEGER" property="passengerInfoId"/>
         <result column="capital" jdbcType="DOUBLE" property="capital"/>
@@ -16,7 +16,7 @@
     id, passenger_info_id, capital, give_fee, freeze_capital, freeze_give_fee, create_time, 
     update_time
   </sql>
-    <insert id="insertSelective" parameterType="com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet">
+    <insert id="insertSelective" parameterType="com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerWallet">
         insert into tbl_passenger_wallet
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

@@ -1,6 +1,6 @@
 package com.yeyangshu.servicepassengeruser.mapper;
 
-import com.yeyangshu.internalcommon.dto.servicepassengeruser.PassengerWallet;
+import com.yeyangshu.internalcommon.entity.servicepassengeruser.dataobject.PassengerWallet;
 
 /**
  * @author yeyangshu

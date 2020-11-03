@@ -2,7 +2,7 @@ package com.yeyangshu.serviceorderdispatch.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yeyangshu.internalcommon.dto.serviceorderdispatch.dataobject.*;
+import com.yeyangshu.internalcommon.entity.serviceorderdispatch.dataobject.*;
 import com.yeyangshu.serviceorderdispatch.mapper.*;
 import com.yeyangshu.serviceorderdispatch.util.ServiceAddress;
 import lombok.extern.slf4j.Slf4j;

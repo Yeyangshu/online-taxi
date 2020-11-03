@@ -1,8 +1,8 @@
 package com.yeyangshu.servicesms.service.impl;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.servicesms.SmsTemplateDto;
-import com.yeyangshu.internalcommon.dto.servicesms.request.SmsSendRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsTemplateDto;
+import com.yeyangshu.internalcommon.entity.servicesms.datatransferobject.SmsSendRequest;
 import com.yeyangshu.servicesms.constant.SmsStatusEnum;
 import com.yeyangshu.servicesms.dao.ServiceSmsRecordDao;
 import com.yeyangshu.servicesms.dao.ServiceSmsTemplateCustomDao;

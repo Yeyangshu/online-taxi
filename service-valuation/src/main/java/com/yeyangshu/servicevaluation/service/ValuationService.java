@@ -1,6 +1,6 @@
 package com.yeyangshu.servicevaluation.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 
 /**
  * 预估价格接口

@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorderdispatch.mapper;
 
-import com.yeyangshu.internalcommon.dto.serviceorderdispatch.dataobject.CarDispatchDistributeSet;
+import com.yeyangshu.internalcommon.entity.serviceorderdispatch.dataobject.CarDispatchDistributeSet;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

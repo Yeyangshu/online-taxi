@@ -1,8 +1,8 @@
 package com.yeyangshu.apipassenger.service.impl;
 
 import com.yeyangshu.apipassenger.service.ServiceVerificationCodeRestTemplateService;
-import com.yeyangshu.internalcommon.dto.ResponseResult;
-import com.yeyangshu.internalcommon.dto.serviceverificationcode.request.VerifyCodeRequest;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
+import com.yeyangshu.internalcommon.entity.serviceverificationcode.datatransferobject.VerifyCodeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

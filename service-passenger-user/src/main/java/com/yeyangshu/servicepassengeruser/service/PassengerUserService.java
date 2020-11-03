@@ -1,6 +1,6 @@
 package com.yeyangshu.servicepassengeruser.service;
 
-import com.yeyangshu.internalcommon.dto.ResponseResult;
+import com.yeyangshu.internalcommon.entity.ResponseResult;
 
 /**
  * 用户登录服务
