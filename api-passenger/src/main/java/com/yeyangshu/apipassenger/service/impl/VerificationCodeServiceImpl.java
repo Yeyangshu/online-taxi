@@ -1,7 +1,7 @@
 package com.yeyangshu.apipassenger.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yeyangshu.apipassenger.service.ServiceSmsRestTemplateService;
+import com.yeyangshu.apipassenger.service.ServiceSmsService;
 import com.yeyangshu.apipassenger.service.VerificationCodeService;
 import com.yeyangshu.internalcommon.constant.CommonStatusEnum;
 import com.yeyangshu.internalcommon.constant.IdentityConstant;
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 public class VerificationCodeServiceImpl implements VerificationCodeService {
 
     @Autowired
-    ServiceVerificationCodeRestTemplateServiceImpl serviceVerificationCodeRestTemplateService;
+    ServiceVerificationCodeServiceImpl serviceVerificationCodeRestTemplateService;
 
     @Autowired
-    ServiceSmsRestTemplateService serviceSmsRestTemplateService;
+    ServiceSmsService serviceSmsService;
 
     /**
      * 第三方发送短信
@@ -40,7 +40,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         }
         String code = verifyCodeResponse.getCode();
         // 调用service-sms服务发送短信验证码
-        ResponseResult result = serviceSmsRestTemplateService.sendSms(phoneNumber, code);
+        ResponseResult result = serviceSmsService.sendSms(phoneNumber, code);
         if (result.getCode() != CommonStatusEnum.SUCCESS.getCode()) {
             return ResponseResult.fail("发送短信失败");
         }

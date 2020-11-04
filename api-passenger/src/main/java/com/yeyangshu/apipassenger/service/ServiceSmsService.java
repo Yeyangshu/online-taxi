@@ -9,7 +9,7 @@ import com.yeyangshu.internalcommon.entity.ResponseResult;
  * @version 1.0
  * @date 2020/10/13 21:19
  */
-public interface ServiceSmsRestTemplateService {
+public interface ServiceSmsService {
 
     /**
      * 发送短信

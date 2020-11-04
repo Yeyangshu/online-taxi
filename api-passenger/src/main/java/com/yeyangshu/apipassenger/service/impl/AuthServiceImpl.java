@@ -33,7 +33,7 @@ import java.util.Date;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private ServiceVerificationCodeRestTemplateService serviceVerificationCodeRestTemplateService;
+    private ServiceVerificationCodeService serviceVerificationCodeService;
 
     @Autowired
     private ServicePassengerUserService servicePassengerUserService;
@@ -72,16 +72,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseResult auth(TokenRequest request) {
         // 调用短信验证服务，验证短信验证码
-        log.info("invoke verification code service, verify code");
-        ResponseResult responseResult = serviceVerificationCodeRestTemplateService
+        log.info("INFO AuthServiceImpl - start auth login");
+        log.info("INFO AuthServiceImpl - invoke verification-code-service verify code, phoneNumber:{}", request.getPhoneNumber());
+        ResponseResult responseResult = serviceVerificationCodeService
                 .verifyCode(IdentityConstant.PASSENGER, request.getPhoneNumber(), request.getVerifyCode());
         if (responseResult.getCode() != CommonStatusEnum.SUCCESS.getCode()) {
             return ResponseResult.fail("登录失败：验证码校验失败");
         }
-        log.info("passenger start sign in");
+        log.info("INFO AuthServiceImpl - invoke passenger-user-service query passenger info, phoneNumber:{}", request.getPhoneNumber());
         // 调用乘客服务，查询乘客信息
         ResponseResult queryPassengerInfo = servicePassengerUserService.queryPassenger(request);
-        log.info("invoke passenger users service, query passenger info");
 
         JSONObject jsonObject = JSONObject.parseObject((String) queryPassengerInfo.getData());
         String jwtStr = (String) jsonObject.get("token");

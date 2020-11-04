@@ -7,7 +7,7 @@ import com.yeyangshu.internalcommon.entity.ResponseResult;
  *
  * @author yeyangshu
  */
-public interface ServiceVerificationCodeRestTemplateService {
+public interface ServiceVerificationCodeService {
 
     /**
      * 生成短信验证码

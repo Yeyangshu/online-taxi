@@ -1,6 +1,6 @@
 package com.yeyangshu.apipassenger.service.impl;
 
-import com.yeyangshu.apipassenger.service.ServiceVerificationCodeRestTemplateService;
+import com.yeyangshu.apipassenger.service.ServiceVerificationCodeService;
 import com.yeyangshu.internalcommon.entity.ResponseResult;
 import com.yeyangshu.internalcommon.entity.serviceverificationcode.datatransferobject.VerifyCodeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
  * @author yeyangshu
  */
 @Service
-public class ServiceVerificationCodeRestTemplateServiceImpl implements ServiceVerificationCodeRestTemplateService {
+public class ServiceVerificationCodeServiceImpl implements ServiceVerificationCodeService {
 
     @Autowired
     RestTemplate restTemplate;

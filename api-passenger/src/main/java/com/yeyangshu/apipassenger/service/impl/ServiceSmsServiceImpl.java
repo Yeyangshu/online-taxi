@@ -1,6 +1,6 @@
 package com.yeyangshu.apipassenger.service.impl;
 
-import com.yeyangshu.apipassenger.service.ServiceSmsRestTemplateService;
+import com.yeyangshu.apipassenger.service.ServiceSmsService;
 import com.yeyangshu.internalcommon.entity.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2020/10/13 21:21
  */
 @Service
-public class ServiceSmsRestTemplateServiceImpl implements ServiceSmsRestTemplateService {
+public class ServiceSmsServiceImpl implements ServiceSmsService {
 
     @Autowired
     RestTemplate restTemplate;
