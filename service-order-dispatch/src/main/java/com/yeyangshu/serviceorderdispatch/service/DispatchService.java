@@ -23,24 +23,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
+ * 派单服务
  */
 @Slf4j
-@Service
 public class DispatchService {
 
     @Autowired
     private DriverService driverService;
 
     @Autowired
-    private OrderMapper orderMapper;
+    private DispatchOrderMapper dispatchOrderMapper;
 
     @Autowired
     private OrderRulePriceMapper orderRulePriceMapper;
@@ -69,12 +67,15 @@ public class DispatchService {
     @Autowired
     private PassengerInfoMapper passengerInfoMapper;
 
-    private static class LazyHodler {
+    /**
+     * single pattern
+     */
+    private static class LazyHolder {
         private static DispatchService ins = new DispatchService();
     }
 
     public static DispatchService ins() {
-        return LazyHodler.ins;
+        return LazyHolder.ins;
     }
 
     public PassengerInfo getPassengerInfo(int id) {
@@ -109,6 +110,12 @@ public class DispatchService {
         return b;
     }
 
+    /**
+     * 给司机推送消息
+     *
+     * @param pushRequest
+     * @return
+     */
     public int pushMessage(PushRequest pushRequest) {
         ResponseResult r = httpService.pushMsg(pushRequest);
         if (r != null) {
@@ -170,7 +177,7 @@ public class DispatchService {
         if (carDispatchTimeThresholdSet == null) {
             return null;
         }
-        log.info("#order carDispatchTimeThresholdSet " + JSONObject.parseObject(String.valueOf(carDispatchTimeThresholdSet)).toString());
+        log.info("#order carDispatchTimeThresholdSet " + JSONObject.toJSONString(carDispatchTimeThresholdSet));
         List<TaskCondition> taskConditions = new ArrayList<>();
         // 轮数
         for (int n = 0; n < round; n++) {
@@ -255,11 +262,11 @@ public class DispatchService {
     }
 
     public int countDriverOrder(int id, Date startTime, Date endTime) {
-        return orderMapper.countOrderByParam(id, startTime, endTime);
+        return dispatchOrderMapper.countOrderByParam(id, startTime, endTime);
     }
 
     public ResponseResult dispatch(DispatchRequest dispatchRequest) {
-        Order order = orderMapper.selectByPrimaryKey(Integer.parseInt(dispatchRequest.getOrderId()));
+        Order order = dispatchOrderMapper.selectByPrimaryKey(Integer.parseInt(dispatchRequest.getOrderId()));
         OrderRulePrice orderRulePrice = orderRulePriceMapper.selectByOrderId(order.getId());
         if (order == null) {
             return ResponseResult.fail(CommonStatusEnum.FAIL.getCode(), "订单 null");
@@ -291,6 +298,17 @@ public class DispatchService {
         return ResponseResult.success(dispatch);
     }
 
+    /**
+     * 派车
+     *
+     * @param order
+     * @param taskCondition
+     * @param distance
+     * @param usedIds
+     * @param round
+     * @param searchType
+     * @return
+     */
     public List<DriverData> getCarByOrder(Order order, TaskCondition taskCondition, int distance, List<Integer> usedIds, int round, boolean searchType) {
         OrderRulePrice orderRulePrice = orderRulePriceMapper.selectByOrderId(order.getId());
         if (orderRulePrice == null) {
@@ -364,7 +382,7 @@ public class DispatchService {
                     log.info("#orderId = " + order.getId() + "  round = " + round + "  driverId = " + driverInfo.getId() + "司机工作状态=" + workStatus + "  车机工作状态=" + csWorkStatus);
                     continue;
                 }
-                int orderCount = orderMapper.countOrderByParam(driverInfo.getId(), startTime, endTime);
+                int orderCount = dispatchOrderMapper.countOrderByParam(driverInfo.getId(), startTime, endTime);
                 if (orderCount > 0) {
                     log.info("#orderId = " + order.getId() + "  round = " + round + "  司机Id = " + driverInfo.getId() + "司机订单数=" + orderCount);
                     continue;
@@ -514,7 +532,7 @@ public class DispatchService {
     }
 
     public Order getOrderById(int id) {
-        return orderMapper.selectByPrimaryKey(id);
+        return dispatchOrderMapper.selectByPrimaryKey(id);
     }
 
     public OrderRulePrice getOrderRulePrice(int orderId) {

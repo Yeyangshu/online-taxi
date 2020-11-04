@@ -32,6 +32,8 @@ public class HttpService {
     @Autowired
     private ConfigService configService;
 
+    // ============================================= sms =======================================================
+
     public ResponseResult sendSms(String phone, String smsCode, Map<String, Object> templateMap) {
         String url = configService.messageServiceUrl() + "/sms/send";
         SmsSendRequest request = new SmsSendRequest();
@@ -60,6 +62,8 @@ public class HttpService {
 
         return responseResult;
     }
+
+    // ============================================= map =======================================================
 
     public ResponseResult updateAmapOrder(OrderRequest orderRequest) {
         String url = configService.mapServiceUrl() + "/order";
@@ -103,6 +107,8 @@ public class HttpService {
         return distance;
     }
 
+    // ============================================= file =======================================================
+
     public void unbind(String subId, String secretNo) {
         String url = configService.fileServiceUrl() + "phone/unbind?";
         Map<String, Object> map = new HashMap<>();
@@ -138,6 +144,8 @@ public class HttpService {
         return null;
     }
 
+    // ============================================= order =======================================================
+
     public boolean updateOrder(Order order) {
         String url = configService.orderServiceUrl() + "/order/updateOrder";
         ResponseResult response = restTemplate.postForObject(url, order, ResponseResult.class);
@@ -146,6 +154,8 @@ public class HttpService {
         }
         return false;
     }
+
+    // ============================================= message =======================================================
 
     public ResponseResult pushMsg(PushRequest pushRequest) {
         String url = configService.messageServiceUrl() + "/push/message";

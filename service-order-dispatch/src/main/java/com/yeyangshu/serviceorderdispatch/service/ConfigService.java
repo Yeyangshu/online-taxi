@@ -80,16 +80,26 @@ public class ConfigService {
         return carDispatchDirectRouteOrderRadiusSetMapper.getCarDispatchDirectRouteOrderRadiusSet(cityCode, serviceTypeId, type);
     }
 
+    /**
+     * 获取汽车调度分配间隔
+     *
+     * @param cityCode
+     * @param serviceTypeId
+     * @return
+     */
     public CarDispatchDistributeIntervalSet getCarDispatchDistributeIntervalSet(String cityCode, int serviceTypeId) {
         return carDispatchDistributeIntervalSetMapper.selectByCityCodeAndServiceType(cityCode, serviceTypeId);
     }
 
+    /**
+     * 查询当前城市是都开启强派订单
+     *
+     * @param city 城市编码
+     * @return 查询结果不存在返回false，结果存在返回true
+     */
     public boolean isOpenForceSendOrder(String city) {
         CarDispatchDistributeSet carDispatchDistributeSet = carDispatchDistributeSetMapper.getOpenedByCityCode(city);
-        if (null != carDispatchDistributeSet) {
-            return true;
-        }
-        return false;
+        return null != carDispatchDistributeSet;
     }
 
     public boolean isSpecial(String cityCode, int serviceCode, long time) {
@@ -123,6 +133,13 @@ public class ConfigService {
         return false;
     }
 
+    /**
+     * 获取强制发送订单时间
+     *
+     * @param cityCode
+     * @param type
+     * @return
+     */
     public int getForceSendOrderTime(String cityCode, int type) {
         CarDispatchTimeThresholdSet carDispatchTimeThresholdSet = carDispatchTimeThresholdSetMapper.selectByCityAndServiceType(cityCode, type);
         return carDispatchTimeThresholdSet.getTimeThreshold();

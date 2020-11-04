@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public interface OrderMapper {
+public interface DispatchOrderMapper {
 
     /**
      * 删除

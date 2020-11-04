@@ -15,6 +15,8 @@ public class OrderTaskFactory {
             return new OrderAirportPickupTask(orderId, type);
         } else if (serviceTypeId == OrderTypeEnum.AIRPORT_DROPOFF.getCode()) {
             return new OrderAirportDropoffTask(orderId, type);
+        } else if (serviceTypeId == OrderTypeEnum.FORCE.getCode()) {
+            return new OrderForceTask(orderId, type);
         } else {
             return new OrderNormalTask(orderId, type);
         }

@@ -19,7 +19,6 @@ import com.yeyangshu.internalcommon.util.DateUtils;
 import com.yeyangshu.internalcommon.util.EncryptUtil;
 import com.yeyangshu.serviceorderdispatch.lock.RedisLock;
 import com.yeyangshu.serviceorderdispatch.service.DispatchService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,16 +28,25 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @date 2018/9/27
+ * 强派订单
  */
-@Data
 @Slf4j
 public class OrderForceTask extends AbstractTask {
+
     public OrderForceTask(int orderId, int type) {
         this.orderId = orderId;
         this.type = type;
     }
 
+    /**
+     * 派单
+     *
+     * @param order
+     * @param orderRulePrice
+     * @param taskCondition
+     * @param round
+     * @return
+     */
     @Override
     public boolean sendOrder(Order order, OrderRulePrice orderRulePrice, TaskCondition taskCondition, int round) {
         String orderKey = DispatchConstant.REDIS_KEY_ORDER + order.getId();
@@ -48,22 +56,23 @@ public class OrderForceTask extends AbstractTask {
             if (newOrder.getStatus() != DispatchConstant.ORDER_STATUS_ORDER_START) {
                 return false;
             }
+            // 循环查找车辆，2km、4km、6km
             for (Integer distance : taskCondition.getDistanceList()) {
+                // 查找车辆集合
                 List<DriverData> list = DispatchService.ins().getCarByOrder(order, taskCondition, distance, usedDriverId, round, true);
-
                 if (list == null) {
                     status = STATUS_END;
                     return false;
                 }
-                log.info("#orderId= " + orderId + "  round = " + round + "  司机数量 = " + list.size());
-                for (DriverData data : list) {
-                    log.info("#orderId= " + orderId + "  round = " + round + "司机信息：" + JSONObject.parseObject(String.valueOf(data)));
+                log.info("INFO OrderForceTask - call car, orderId:{}, round:{}, driverCount:{}}", orderId, round, list.size());
+                 for (DriverData data : list) { log.info("INFO OrderForceTask - car data, orderId:{}, round:{}, driverData:{}", orderId, round, JSONObject.parseObject(String.valueOf(data)));
                     Date startTime = new Date(order.getOrderStartTime().getTime() - TimeUnit.MINUTES.toMillis(taskCondition.getFreeTimeBefore()));
                     Date endTime = new Date(order.getOrderStartTime().getTime() + TimeUnit.MINUTES.toMillis(taskCondition.getFreeTimeAfter()));
                     String redisKey = DispatchConstant.REDIS_KEY_DRIVER + data.getDriverInfo().getId();
-                    log.info("#orderId= " + orderId + "  round = " + round + "车辆高德信息：" + JSONObject.parseObject(String.valueOf(data.getAmapVehicle())));
+                    log.info("INFO OrderForceTask - car amap data, orderId:{}, round:{}, vehicleAmap:{}", orderId, round, JSONObject.parseObject(String.valueOf(data.getAmapVehicle())));
                     try {
                         RedisLock.ins().lock(redisKey);
+                        // 可以接单
                         int count = DispatchService.ins().countDriverOrder(data.getDriverInfo().getId(), startTime, endTime);
                         if (count > 0) {
                             continue;
@@ -79,6 +88,7 @@ public class OrderForceTask extends AbstractTask {
                         String mappingNumber = "";
                         try {
                             if (StringUtils.isNotEmpty(order.getPassengerPhone())) {
+                                // 调用file服务，绑定手机号
                                 bindAxbResponse1 = DispatchService.ins().bindAxb(EncryptUtil.decryptionPhoneNumber(data.getDriverInfo().getPhoneNumber()), EncryptUtil.decryptionPhoneNumber(order.getPassengerPhone()), order.getOrderStartTime().getTime() + TimeUnit.DAYS.toMillis(1));
                                 if (bindAxbResponse1 != null) {
                                     updateOrder.setMappingNumber(bindAxbResponse1.getAxbSecretNo());
@@ -109,10 +119,10 @@ public class OrderForceTask extends AbstractTask {
                         updateOrder.setFakeSuccess(data.getIsFollowing());
                         updateOrder.setDriverGrabTime(new Date());
                         updateOrder.setUpdateType(DispatchConstant.ORDER_STATUS_ORDER_START);
-                        //派单
+                        // 更新订单状态
                         boolean success = DispatchService.ins().updateOrder(updateOrder);
                         if (success) {
-                            //更新高德
+                            // 更新高德
                             OrderRequest orderRequest = new OrderRequest();
                             orderRequest.setOrderId(order.getId() + "");
                             orderRequest.setCustomerDeviceId(order.getDeviceCode());
@@ -123,18 +133,19 @@ public class OrderForceTask extends AbstractTask {
                             DispatchService.ins().updateAmapOrder(orderRequest);
                             status = STATUS_END;
 
-                            //推送
                             String driverPhone = EncryptUtil.decryptionPhoneNumber(data.getDriverInfo().getPhoneNumber());
                             String passengerPhone = EncryptUtil.decryptionPhoneNumber(order.getOtherPhone() == null || order.getOtherPhone().isEmpty() ? order.getPassengerPhone() : order.getOtherPhone());
+                            // 推送司机
                             pushDriver(order, orderRulePrice, data, passengerPhone);
+                            // 推送乘客
                             pushPassanger(order, orderRulePrice, data, driverPhone);
-                            //短信司机
+                            // 短信司机
                             smsDriver(order, orderRulePrice, data, passengerPhone, driverPhone);
                             pushOther(order, orderRulePrice, data, StringUtils.isEmpty(otherMappingNumber) ? driverPhone : otherMappingNumber);
                             pushPassenger(order, orderRulePrice, data, StringUtils.isEmpty(mappingNumber) ? driverPhone : mappingNumber);
                             return true;
                         } else {
-                            log.info("#orderId = " + orderId + " 强派更新订单失败");
+                            log.info("INFO OrderForceTask - farce task fail, orderId:{}", orderId);
                             if (bindAxbResponse2 != null) {
                                 DispatchService.ins().unbind(bindAxbResponse2.getAxbSubsId(), bindAxbResponse2.getAxbSecretNo());
                             }
@@ -143,9 +154,9 @@ public class OrderForceTask extends AbstractTask {
                             }
                         }
                     } catch (Exception e) {
-                        log.error("forceSendOrder", e);
+                        log.info("INFO OrderForceTask - farce send order fail, orderId:{}", orderId);
                     } finally {
-                        log.info("unlock key = " + redisKey);
+                        log.info("INFO OrderForceTask - unlock redis key, redisKey:{}", redisKey);
                         RedisLock.ins().unlock(redisKey);
                     }
                 }
@@ -197,9 +208,17 @@ public class OrderForceTask extends AbstractTask {
 
             DispatchService.ins().sendSmsMessageHx(phone, DispatchConstant.HX_FORCE_DISPATCH_PASSENGER, pname, color, plateNumber, StringUtils.substring(driverData.getDriverInfo().getDriverName(), 0, 1) + "师傅", driverPhone);
         } catch (Exception e) {
+            log.error("ERROR OrderForceTask - push other fail");
         }
     }
 
+    /**
+     *
+     * @param order
+     * @param orderRulePrice
+     * @param driverData
+     * @param driverPhone
+     */
     public void pushPassenger(Order order, OrderRulePrice orderRulePrice, DriverData driverData, String driverPhone) {
         try {
             // HX_FORCE_DISPATCH_PASSENGER2
@@ -236,7 +255,6 @@ public class OrderForceTask extends AbstractTask {
             contentMsg = "尊敬的逸品出行用户,您" + DateUtils.formatDate(order.getOrderStartTime(), DateUtils.yyMMddHHmm) + "的订单已指派给" + StringUtils.substring(data.getDriverInfo().getDriverName(), 0, 1) + "师傅,车牌号:" + data.getCarInfo().getPlateNumber() + ",车身颜色:" + data.getCarInfo().getColor();
         } catch (Exception e) {
             log.info("强派向乘客推送消息,组装消息异常");
-            e.printStackTrace();
         } finally {
             PushRequest pushRequest = new PushRequest();
             pushRequest.setSendId(order.getDriverId() + "");
@@ -252,6 +270,14 @@ public class OrderForceTask extends AbstractTask {
         }
     }
 
+    /**
+     * 为司机派送订单
+     *
+     * @param order
+     * @param orderRulePrice
+     * @param data
+     * @param passengerPhone
+     */
     public void pushDriver(Order order, OrderRulePrice orderRulePrice, DriverData data, String passengerPhone) {
         try {
             String timeDesc = DateUtils.formatDate(order.getOrderStartTime(), DateUtils.yyMMddHHmm);
@@ -309,6 +335,6 @@ public class OrderForceTask extends AbstractTask {
 
     @Override
     public void taskEnd(Order order, OrderRulePrice orderRulePrice) {
-        log.info("#orderId= " + orderId + "  OrderForceTask  强派结束");
+        log.info("INFO OrderForceTask - force order end, orderId:{}", order.getId());
     }
 }
