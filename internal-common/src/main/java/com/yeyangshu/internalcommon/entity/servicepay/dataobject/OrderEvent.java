@@ -1,16 +1,22 @@
-package com.yeyangshu.serviceorder.entity;
+package com.yeyangshu.internalcommon.entity.servicepay.dataobject;
+
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
- * @author yeyangshu
- * @version 1.0
- * @date 2020/10/26 22:23
+ * 消息事件表
+ * <tt>tbl_order_event</tt>
  */
 @Data
-public class TblOrderEvent {
+public class OrderEvent implements Serializable {
+
+    private static final long serialVersionUID = -8995362739473219653L;
+
+    /**
+     * 数据库主键id
+     */
     private Integer id;
 
     /**
@@ -19,7 +25,7 @@ public class TblOrderEvent {
     private String orderType;
 
     /**
-     * 事件环节（new,published,processed)
+     * 事件环节（new, published, processed)
      */
     private String process;
 
@@ -28,9 +34,14 @@ public class TblOrderEvent {
      */
     private String content;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
 }

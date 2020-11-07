@@ -1,35 +1,54 @@
 package com.yeyangshu.serviceorder.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.RedeliveryPolicy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-
-import javax.jms.Queue;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
 
 /**
- * 生产者
- *
- * @author yeyangshu
- * @version 1.0
- * @date 2020/10/26 22:21
+ * 消息消费端配置类
  */
 @Configuration
 public class ActiveMQConfig {
 
+    /**
+     * ActiveMQ地址
+     */
     @Value("${spring.activemq.broker-url}")
     private String brokerUrl;
 
+    /**
+     * 连接工厂
+     *
+     * @return
+     */
     @Bean
-    public Queue queue() {
-        return new ActiveMQQueue("ActiveMQQueue");
+    public ActiveMQConnectionFactory connectionFactory(RedeliveryPolicy redeliveryPolicy) {
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
+        activeMQConnectionFactory.setRedeliveryPolicy(redeliveryPolicy);
+        return activeMQConnectionFactory;
+    }
+
+    /**
+     * 重发配置
+     *
+     * @return
+     */
+    @Bean
+    public RedeliveryPolicy redeliveryPolicy() {
+        return new RedeliveryPolicy();
     }
 
     @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory(brokerUrl);
+    public JmsListenerContainerFactory jmsListenerContainerFactory(ActiveMQConnectionFactory activeMQConnectionFactory) {
+        DefaultJmsListenerContainerFactory bean = new DefaultJmsListenerContainerFactory();
+        bean.setConnectionFactory(activeMQConnectionFactory);
+        // 1: 自动确认，2： 客户端手动确认，3：自动批量确认，4 事务提交并确认。
+        bean.setSessionAcknowledgeMode(2);
+        return bean;
     }
 
 }

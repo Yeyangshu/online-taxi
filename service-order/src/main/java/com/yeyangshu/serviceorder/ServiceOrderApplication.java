@@ -10,8 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-//@EnableJms
-//@EnableScheduling
+@EnableJms
 @MapperScan("com.yeyangshu.serviceorder.mapper")
 public class ServiceOrderApplication {
 

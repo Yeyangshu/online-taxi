@@ -1,7 +1,7 @@
-package com.yeyangshu.servicepay.component;
+package com.yeyangshu.serviceorder.task;
 
-import com.yeyangshu.servicepay.dao.TblOrderEventDao;
-import com.yeyangshu.servicepay.entity.TblOrderEvent;
+import com.yeyangshu.internalcommon.entity.servicepay.dataobject.OrderEvent;
+import com.yeyangshu.serviceorder.mapper.TblOrderEventDao;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -11,8 +11,13 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+/**
+ * @author yeyangshu
+ * @version 1.0
+ * @date 2020/11/7 20:05
+ */
 @Component
-public class ConsumerQueue {
+public class ListenerTask {
 
     @Autowired
     private TblOrderEventDao tblOrderEventDao;
@@ -29,7 +34,7 @@ public class ConsumerQueue {
         try {
             System.out.println("收到的消息");
             String content = textMessage.getText();
-            TblOrderEvent tblOrderEvent = (TblOrderEvent) JSONObject.toBean(JSONObject.fromObject(content), TblOrderEvent.class);
+            OrderEvent tblOrderEvent = (OrderEvent) JSONObject.toBean(JSONObject.fromObject(content), OrderEvent.class);
             tblOrderEventDao.insert(tblOrderEvent);
             // 业务完成，确认消息，消费成功
             textMessage.acknowledge();

@@ -1,17 +1,14 @@
-package com.yeyangshu.serviceorder.mapper;
+package com.yeyangshu.servicepay.mapper;
 
 import com.yeyangshu.internalcommon.entity.servicepay.dataobject.OrderEvent;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
 
 /**
  * @author yeyangshu
  * @version 1.0
- * @date 2020/10/26 22:22
+ * @date 2020/11/7 19:47
  */
-@Mapper
-public interface TblOrderEventDao {
+public interface PayEventMapper {
 
     int deleteByPrimaryKey(Integer id);
 

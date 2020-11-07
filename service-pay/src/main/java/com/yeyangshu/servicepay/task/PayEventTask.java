@@ -1,7 +1,8 @@
-package com.yeyangshu.serviceorder.task;
+package com.yeyangshu.servicepay.task;
 
-import com.yeyangshu.serviceorder.mapper.TblOrderEventDao;
-import com.yeyangshu.serviceorder.entity.TblOrderEvent;
+import com.yeyangshu.internalcommon.entity.servicepay.dataobject.OrderEvent;
+import com.yeyangshu.servicepay.dao.PayEventDao;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
@@ -13,15 +14,18 @@ import javax.jms.Queue;
 import java.util.List;
 
 /**
+ * 订单消息事件表定时任务
+ *
  * @author yeyangshu
  * @version 1.0
- * @date 2020/10/26 22:24
+ * @date 2020/11/7 19:45
  */
 @Component
-public class ProduceTask {
+@Slf4j
+public class PayEventTask {
 
     @Autowired
-    private TblOrderEventDao tblOrderEventDao;
+    private PayEventDao payEventDao;
 
     @Autowired
     private Queue queue;
@@ -29,19 +33,15 @@ public class ProduceTask {
     @Autowired
     JmsMessagingTemplate jmsMessagingTemplate;
 
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron="0/5 * * * * ?")
     @Transactional(rollbackFor = Exception.class)
-    public void task() {
-        System.out.println("定时任务");
-
-        List<TblOrderEvent> tblOrderEventList = tblOrderEventDao.selectByOrderType("1");
-        for (int i = 0; i < tblOrderEventList.size(); i++) {
-            TblOrderEvent event = tblOrderEventList.get(i);
-
+    public void task(){
+        log.info("INFO OrderEventTask - start scheduled task");
+        List<OrderEvent> tblOrderEventList = payEventDao.listByOrderType("1");
+        for (OrderEvent event : tblOrderEventList) {
             // 更改这条数据的orderType为2
-            tblOrderEventDao.updateEvent(event.getOrderType());
-            System.out.println("修改数据库完成");
-
+            payEventDao.updateEvent(event.getOrderType());
+            log.info("INFO OrderEventTask - update database success, eventId:{}", event.getId());
             jmsMessagingTemplate.convertAndSend(queue, JSONObject.fromObject(event).toString());
         }
     }
