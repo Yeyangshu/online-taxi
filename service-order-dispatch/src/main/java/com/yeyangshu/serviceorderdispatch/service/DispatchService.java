@@ -67,6 +67,11 @@ public class DispatchService {
     @Autowired
     private PassengerInfoMapper passengerInfoMapper;
 
+
+    public ResponseResult dispatchOrder(int orderId) {
+        return new ResponseResult();
+    }
+
     /**
      * single pattern
      */

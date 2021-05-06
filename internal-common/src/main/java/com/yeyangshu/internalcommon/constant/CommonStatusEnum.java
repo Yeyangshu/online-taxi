@@ -59,7 +59,7 @@ public enum CommonStatusEnum {
      * code
      */
     @Getter
-    private final int code;
+    private final Integer code;
 
     /**
      * value

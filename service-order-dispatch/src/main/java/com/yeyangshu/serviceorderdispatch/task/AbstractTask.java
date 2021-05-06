@@ -22,161 +22,131 @@ import java.util.concurrent.TimeUnit;
  */
 @Data
 @Slf4j
-public abstract class AbstractTask implements ITask {
+public abstract class AbstractTask implements Task {
 
-    /**
-     * 订单id
-     */
-    protected int orderId;
+    /** 订单id */
+    //protected int orderId;
 
-    /**
-     * 下次执行时间
-     */
+    /** 任务条件集合 */
+    protected List<TaskCondition> taskConditions;
+
+    /** 任务下次执行时间 */
     protected long nextExecuteTime;
 
-    /**
-     * 执行的类型
-     */
-    protected int type;
+    /** 任务轮数 */
+    protected int taskRound;
 
-    /**
-     * 执行轮数
-     */
-    protected int round;
+    /** 任务状态 */
+    protected int taskStatus;
 
-    protected static final int PIRED = 20;
+    /** 任务结束 */
+    protected static final int TASK_STATUS_END = -1;
 
-    protected List<TaskCondition> taskConditions = new ArrayList<>();
-
-    protected int status;
-
-    protected List<Integer> usedDriverId = new ArrayList<>();
-
-    protected static final int STATUS_END = -1;
 
     @Override
-    public int getTaskId() {
-        return orderId;
+    public Task create() {
+        TaskThreadContext taskContext = (TaskThreadContext) TaskContextHolder.getTaskContext();
+        TaskFactory taskFactory = taskContext.getTaskFactory();
+        return null;
     }
 
     @Override
-    public boolean isTime() {
-        return System.currentTimeMillis() > nextExecuteTime;
-    }
+    public int execute() {
+        TaskThreadContext taskContext = (TaskThreadContext) TaskContextHolder.getTaskContext();
 
-    @Override
-    public int getOrderType() {
-        return type;
-    }
-
-    @Override
-    public void setTaskConditions(List<TaskCondition> taskConditions) {
-        this.taskConditions = taskConditions;
-    }
-
-    @Override
-    public int execute(long current) {
-        if (current < nextExecuteTime) {
-            return status;
+        long startTime = taskContext.getStartTime();
+        if (startTime < nextExecuteTime) {
+            return taskStatus;
         }
+
+        int orderId = taskContext.getOrderId();
         Order order = DispatchService.ins().getOrderById(orderId);
         OrderRulePrice orderRulePrice = DispatchService.ins().getOrderRulePrice(orderId);
-        if (order == null || orderRulePrice == null) {
-            status = STATUS_END;
-            return status;
+
+        // 订单是否存在
+        if (isExistOrder(order, orderRulePrice)) {
+            setTaskStatusEnd();
+            return taskStatus;
         }
-        // 判断是否已有司机接单
-        if (order.getStatus() != DispatchConstant.ORDER_STATUS_ORDER_START) {
-            status = STATUS_END;
-            return status;
+
+        // 订单是否被司机接单
+        if (isOrderSent(order)) {
+            setTaskStatusEnd();
+            return taskStatus;
         }
-        if (round > taskConditions.size() - 1) {
-            status = STATUS_END;
-            // 推送乘客，没人接单，或者加成功
-            log.info("#orderId= " + orderId + "  round = " + round + "派单结束");
-            taskEnd(order, orderRulePrice);
-            return status;
+
+        // 是否推送完轮数
+        if (isEndRound()) {
+            setTaskStatusEnd();
+            end();
+            return taskStatus;
         }
-        int currentRound = round;
-        round++;
+
+        // getCondition
+        // nextExecuteTime = current + TimeUnit.SECONDS.toMillis(taskCondition.getNextTime());
+        // 是否派单成功，没成功继续，成功返回
+        if (!isOrderSentSuccess(order, orderRulePrice, startTime)) {
+            return execute();
+        }
+        return taskStatus;
+    }
+
+    @Override
+    public void end() {
+
+    }
+
+    /**
+     * 设置任务结束状态
+     */
+    public void setTaskStatusEnd() {
+        taskStatus = TASK_STATUS_END;
+    }
+
+    /**
+     * 判断订单是否存在
+     *
+     * @return 订单是否存在
+     */
+    public boolean isExistOrder(Order order, OrderRulePrice orderRulePrice) {
+        return order != null && orderRulePrice != null;
+    }
+
+    /**
+     * 订单是否被司机接受
+     *
+     * @param order 订单
+     * @return 结果
+     */
+    public boolean isOrderSent(Order order) {
+        return order.getStatus() != DispatchConstant.ORDER_STATUS_ORDER_START;
+    }
+
+    /**
+     * 是否完成所有轮数
+     *
+     * @return 结果
+     */
+    public boolean isEndRound() {
+        return taskRound > taskConditions.size() - 1;
+    }
+
+    /**
+     * 是否发送订单成功
+     *
+     * @param order
+     * @param orderRulePrice
+     * @return
+     */
+    public boolean isOrderSentSuccess(Order order, OrderRulePrice orderRulePrice, long startTime) {
+        int currentRound = taskRound;
+        taskRound++;
         TaskCondition taskCondition = taskConditions.get(currentRound);
-        log.info("#orderId = " + order.getId() + "  round = " + currentRound + "  派单 round = " + currentRound);
-
-        boolean b = true;
-        b = sendOrder(order, orderRulePrice, taskCondition, currentRound);
-        nextExecuteTime = current + TimeUnit.SECONDS.toMillis(taskCondition.getNextTime());
-        if (!b) {
-            nextExecuteTime = 0;
-            log.info("#orderId= " + orderId + "  直接下一轮");
-            return execute(current);
-        }
-        return status;
+        nextExecuteTime = startTime + TimeUnit.SECONDS.toMillis(taskCondition.getNextTime());
+        return sendOrder(order, orderRulePrice, taskCondition, currentRound);
     }
 
-    protected String getTypeDesc2(Order order) {
-        int serviceType = order.getServiceType();
-        String s = "";
-        if (serviceType == OrderTypeEnum.REAL_TIME.getCode()) {
-        } else if (serviceType == OrderTypeEnum.NORMAL.getCode()) {
-        } else if (serviceType == OrderTypeEnum.AIRPORT_PICKUP.getCode()) {
-            s = "接机";
-        } else if (serviceType == OrderTypeEnum.AIRPORT_DROPOFF.getCode()) {
-            s = "送机";
-        } else if (serviceType == OrderTypeEnum.CHARTERED_CAR_HALF.getCode()) {
-            s = "包车";
-        } else if (serviceType == OrderTypeEnum.CHARTERED_CAR_FULL.getCode()) {
-            s = "包车";
-        }
-        return s;
-    }
-
-    protected String getTypeDesc(int serviceType, int isFollowing) {
-        String s = "";
-
-        if (serviceType == OrderTypeEnum.NORMAL.getCode()) {
-            s = "预约派单";
-        } else if (serviceType == OrderTypeEnum.FORCE.getCode()) {
-            s += "实时派单";
-            if (isFollowing == 1) {
-                s = "顺风单";
-            }
-        } else if (serviceType == OrderTypeEnum.AIRPORT_DROPOFF.getCode()) {
-            s += "送机派单";
-        } else if (serviceType == OrderTypeEnum.AIRPORT_PICKUP.getCode()) {
-            s += "接机派单";
-        } else if (serviceType == OrderTypeEnum.CHARTERED_CAR_FULL.getCode() || serviceType == OrderTypeEnum.CHARTERED_CAR_HALF.getCode()) {
-            s += "包车派单";
-        }
-        return s;
-    }
-
-    public JSONArray getTagsJson(String useFeature) {
-        // "tagList": [ //订单标签
-        // {
-        //     "tagImg": "http://yesincar-test-source.oss-cn-hangzhou.aliyuncs.com/test",
-        //         "tagId": "1"
-        // },
-        // {
-        //     "tagImg": "http://yesincar-test-source.oss-cn-hangzhou.aliyuncs.com/image",
-        //         "tagId": "2"
-        // },
-        //     ],
-        JSONArray jsonArray = new JSONArray();
-        if (StringUtils.isEmpty(useFeature)) {
-            return jsonArray;
-        }
-        String[] ss = useFeature.split(",");
-        for (String s : ss) {
-            int id = Integer.parseInt(s);
-            TagInfo tagInfo = DispatchService.ins().getTagInfo(id);
-            if (tagInfo == null) {
-                continue;
-            }
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("tagImg", DispatchService.ins().getOssFileUrl() + tagInfo.getTagImg());
-            jsonObject.put("tagId", tagInfo.getId());
-            jsonArray.add(jsonObject);
-        }
-        return jsonArray;
+    public boolean sendOrder(Order order, OrderRulePrice orderRulePrice, TaskCondition taskCondition, int round) {
+        return true;
     }
 }

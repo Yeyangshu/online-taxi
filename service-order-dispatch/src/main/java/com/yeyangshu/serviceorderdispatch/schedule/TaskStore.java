@@ -1,6 +1,6 @@
 package com.yeyangshu.serviceorderdispatch.schedule;
 
-import com.yeyangshu.serviceorderdispatch.task.ITask;
+import com.yeyangshu.serviceorderdispatch.task.Task;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,10 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class TaskStore {
 
-    /**
-     * 同步容器，存储任务
-     */
-    private final ConcurrentHashMap<Integer, ITask> results = new ConcurrentHashMap<>();
+    /** 同步容器，存储任务 */
+    private final ConcurrentHashMap<Integer, Task> results = new ConcurrentHashMap<>();
 
     /**
      * 订单添加任务
@@ -28,7 +26,7 @@ public class TaskStore {
      * @param taskId 订单号
      * @param task   具体子任务实现
      */
-    public void addTask(int taskId, ITask task) {
+    public void addTask(int taskId, Task task) {
         results.put(taskId, task);
     }
 
@@ -37,9 +35,9 @@ public class TaskStore {
      *
      * @return 未派送订单
      */
-    public List<ITask> getNeedRetryTask() {
+    public List<Task> getNeedRetryTask() {
         synchronized (results) {
-            List<ITask> list = new ArrayList<>(results.values());
+            List<Task> list = new ArrayList<>(results.values());
             results.clear();
             return list;
         }
